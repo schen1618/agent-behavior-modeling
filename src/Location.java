@@ -1,41 +1,46 @@
 import java.awt.*;
-import java.util.HashMap;
+import java.util.List;
+import java.util.*;
 
 public class Location extends Point
 {
-    private double unitELevel;
-    private HashMap<Agent, java.lang.Double> agentsInUnitList = new HashMap<>();
+    private double locationELevel;
+    private List<Agent> agentsInLocationList = new ArrayList<>();
     
     public Location(int x, int y)
     {
         setLocation(x, y);
-        unitELevel = 0;
+        locationELevel = 0;
     }
     
-    public double getUnitELevel()
+    public double getLocationELevel()
     {
-        return unitELevel;
+        return locationELevel;
     }
     
-    public void setUnitELevel(double unitELevel)
+    public void setLocationELevel(double unitELevel)
     {
-        this.unitELevel = unitELevel;
+        this.locationELevel = unitELevel;
     }
     
-    public double calcAndGetUnitELevel()
+    public void calcLocationELevel()
     {
-        unitELevel = agentsInUnitList.values().stream().mapToDouble(java.lang.Double::valueOf).average().orElse(0);
-        return unitELevel;
+        locationELevel = agentsInLocationList.stream().mapToDouble(Agent::geteLevel).average().orElse(0);
     }
     
-    public HashMap<Agent, java.lang.Double> getAgentsInUnitList()
+    public List<Agent> getAgentsInLocationList()
     {
-        return agentsInUnitList;
+        return agentsInLocationList;
     }
     
-    public void addToAgentsInUnitList(Agent a)
+    public void addAgentsInLocationList(Agent a)
     {
-        agentsInUnitList.put(a, a.geteLevel());
+        agentsInLocationList.add(a);
+    }
+    
+    public void removeAgentsInLocationList(Agent a)
+    {
+        agentsInLocationList.remove(a);
     }
     
     /*

@@ -5,12 +5,25 @@ import java.util.*;
 
 public class Environment extends JPanel
 {
+    //total grid size in pixels
     int gridSizePixel;
+    
+    //grid unit size in pixels
     int gridUnitSize = 10;
+    
+    //grid left edge pixel location
     int gridPixelStart = 15;
+    
+    //number of agents
     int numAgents;
-    ArrayList<Agent> agentList = new ArrayList<>();
+    
+    //list that contains agents
+    List<Agent> agentList = new ArrayList<>();
+    
+    //list that contains locations
     HashMap<Point, Location> locationList = new HashMap<>();
+    
+    //list that contains danger locations
     List<Point> dangerArea;
     
     public Environment(int gridSize, int numAgents)
@@ -20,11 +33,12 @@ public class Environment extends JPanel
     
     public Environment(int gridSize, int numAgents, List<Point> dangerArea)
     {
-        this.gridSizePixel = (gridSize + 1) * gridUnitSize;
+        this.gridSizePixel = gridSize * gridUnitSize;
         this.numAgents = numAgents;
         this.dangerArea = dangerArea;
         initLocations();
         initAgentArray(numAgents);
+        
         
         Thread thread = new Thread(() -> {
             while(true)
@@ -39,12 +53,17 @@ public class Environment extends JPanel
                 }
                 catch(InterruptedException ex)
                 {
+                    ex.printStackTrace();
                 }
             }
         });
         thread.start();
     }
     
+    /**
+     * Initializes agent array, creates agents and adds agent location to locationList
+     * @param n number of agents
+     */
     public void initAgentArray(int n)
     {
         for(int i = 0; i < n; i++)
@@ -53,10 +72,13 @@ public class Environment extends JPanel
             agentList.add(agent);
             int x = (int) agent.getX();
             int y = (int) agent.getY();
-            locationList.get(new Point(x, y)).addToAgentsInUnitList(agent);
+            locationList.get(new Point(x, y)).addAgentsInLocationList(agent);
         }
     }
     
+    /**
+     * Initializes location array
+     */
     public void initLocations()
     {
         for(int x = gridPixelStart + 5; x <= gridSizePixel; x += gridUnitSize)
@@ -67,7 +89,7 @@ public class Environment extends JPanel
                 Location l = new Location(x, y);
                 if(dangerArea.contains(p))
                 {
-                    l.setUnitELevel(510); //max eLevel
+                    l.setLocationELevel(510); //max eLevel
                 }
                 locationList.put(p, l);
             }
@@ -78,7 +100,10 @@ public class Environment extends JPanel
     {
         for(Agent a : agentList)
         {
+            Location prev = locationList.get(a.getLocation());
             a.move();
+            prev.removeAgentsInLocationList(a);
+            locationList.get(a.getLocation()).addAgentsInLocationList(a);
         }
     }
     
@@ -86,11 +111,11 @@ public class Environment extends JPanel
     {
         for(Location l : locationList.values())
         {
-            l.calcAndGetUnitELevel();
+            l.calcLocationELevel();
             
             if(dangerArea.contains(l))
             {
-                l.setUnitELevel(510); //max eLevel
+                l.setLocationELevel(510); //max eLevel
             }
         }
     }
@@ -107,11 +132,17 @@ public class Environment extends JPanel
                 h.add(l);
             }
             a.setAdjList(h);
-            double d = adjList.stream().mapToDouble(e -> locationList.get(e).getUnitELevel()).average().orElse(0);
-            a.calcELevel(d);
+            double d = adjList.stream().mapToDouble(e -> locationList.get(e).getLocationELevel()).average().orElse(0);
+            a.setELevel(d);
         }
     }
     
+    /**
+     * Finds adjacent locations
+     * @param x x coord
+     * @param y y coord
+     * @return list of adjacent locations
+     */
     public List<Point> findAdjLocation(int x, int y)
     {
         List<Point> a = new ArrayList<>();

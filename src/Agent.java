@@ -43,7 +43,7 @@ public class Agent extends Point
     {
         this.gridSizePixel = gridSizePixel;
         this.gridUnitSize = gridUnitSize;
-        maxMoveGrid = gridSizePixel;
+        maxMoveGrid = gridSizePixel + 10;
         setLocation(randCoord(), randCoord());
         eLevel = 0;
         this.dangerArea = dangerArea;
@@ -54,20 +54,20 @@ public class Agent extends Point
         return eLevel;
     }
     
-    public void seteLevel(double eLevel)
-    {
-        this.eLevel = eLevel;
-    }
-    
-    public void calcELevel(double avg)
+    /**
+     * set elevel
+     *
+     * @param avg average elevel of adjacent locations
+     */
+    public void setELevel(double avg)
     {
         if(dangerArea.contains(this))
         {
-            seteLevel(maxELevel);
+            eLevel = maxELevel;
         }
         else
         {
-            seteLevel(avg);
+            eLevel = avg;
         }
     }
     
@@ -99,7 +99,21 @@ public class Agent extends Point
     public int randCoord()
     {
         Random random = new Random();
-        return (random.nextInt((gridSizePixel / 10) - 2) + 2) * gridUnitSize;
+        //20 to gridsizemax - 5
+        return (random.nextInt((maxMoveGrid / 10) - 2) + 2) * gridUnitSize;
+    }
+    
+    public static void main(String[] args)
+    {
+        for(int i = 0; i < 1000; i++)
+        {
+            Agent a = new Agent(110, 10, new ArrayList<>());
+            int x = a.randCoord();
+            if(x > 110)
+            {
+                System.out.println("yes!");
+            }
+        }
     }
     
     /**
@@ -107,33 +121,55 @@ public class Agent extends Point
      */
     public void move()
     {
-        setLocation(getNextMove());
+        setLocation(findNextMove());
     }
     
-    public Point getNextMove()
+    public Point findNextMove()
     {
-        PriorityQueue<Location> pq = new PriorityQueue<>(new Comparator<Location>()
+        double d = new Random().nextDouble();
+        double min = 0;
+        double sum = getAdjList().stream().mapToDouble(this::h1).sum();
+        for(Location a : getAdjList())
         {
-            @Override
-            public int compare(Location o1, Location o2)
+            min = min + (h1(a) / sum);
+            
+            if(d < min)
             {
-                return java.lang.Double.compare(h2(o1), h2(o2));
+                return a.getLocation();
             }
-        });
-        pq.addAll(adjList);
-        return adjList.get(adjList.indexOf(pq.poll())).getLocation();
+        }
+        
+        return null;
     }
     
+    /**
+     * Movement decision 1
+     *
+     * @param e location
+     * @return calculation
+     */
     public double h1(Location e)
     {
-        return 0.125 * Math.exp(-1 * e.getUnitELevel() * e.getAgentsInUnitList().size());
+        double p = 1;
+        double q = 1;
+        //Math.exp(-1 * b * e.getLocationELevel() * (e.getAgentsInLocationList().size() + 1));
+        return Math.exp(-1 * p * e.getLocationELevel()) + Math.exp(-1 * q * e.getAgentsInLocationList().size());
     }
     
+    /**
+     * Movement decision 2
+     *
+     * @param e location
+     * @return calculation
+     */
     public double h2(Location e)
     {
-        return 0.125 * Math.exp(-1 * geteLevel() * e.getAgentsInUnitList().size());
+        return Math.exp(-1 * geteLevel() * e.getAgentsInLocationList().size());
     }
     
+    /**
+     * Randomly moves agent
+     */
     public void moveRandom()
     {
         int dx;
@@ -174,64 +210,5 @@ public class Agent extends Point
         
         setLocation(getX() + dx, getY() + dy);
     }
-    
-    /*public List<Point> findAdjLocationELevel(int x, int y)
-    {
-        List<Point> adjList = null;
-        //center, left edge, right edge, corners
-        if(x == 20)
-        {
-            adjList = new ArrayList<>();
-            
-            adjList.add(new Point(x, y + gridUnitSize)); //left top corner
-            adjList.add(new Point(x + gridUnitSize, y));
-            adjList.add(new Point(x + gridUnitSize, y + gridUnitSize));
-            
-            if(!(y == 20 || y == maxMoveGrid)) //top edge
-            {
-                adjList.add(new Point(x, y - gridUnitSize));
-                adjList.add(new Point(x + gridUnitSize, y - gridUnitSize));
-            }
-            
-            return adjList;
-        }
-        
-        if(x == maxMoveGrid)
-        {
-            adjList = new ArrayList<>();
-            
-            adjList.add(new Point(x - gridUnitSize, y)); //left bottom corner
-            adjList.add(new Point(x, y + gridUnitSize));
-            adjList.add(new Point(x - gridUnitSize, y + gridUnitSize));
-            
-            if(!(y == 20 || y == maxMoveGrid)) //bottom edge
-            {
-                adjList.add(new Point(x, y - gridUnitSize));
-                adjList.add(new Point(x - gridUnitSize, y - gridUnitSize));
-            }
-            
-            return adjList;
-        }
-    
-        if(y == 20)
-        {
-            adjList = new ArrayList<>();
-        
-            adjList.add(new Point(x - gridUnitSize, y)); //left bottom corner
-            adjList.add(new Point(x, y + gridUnitSize));
-            adjList.add(new Point(x - gridUnitSize, y + gridUnitSize));
-        
-            if(!(x == maxMoveGrid)) //left edge
-            {
-                adjList.add(new Point(x, y - gridUnitSize));
-                adjList.add(new Point(x - gridUnitSize, y - gridUnitSize));
-            }
-        
-            return adjList;
-        }
-        
-        return adjList;
-    }
-    */
 }
 
