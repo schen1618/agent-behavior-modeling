@@ -25,7 +25,7 @@ public class Location extends Point
     
     public void calcLocationELevel()
     {
-        locationELevel = agentsInLocationList.stream().mapToDouble(Agent::geteLevel).average().orElse(0);
+        locationELevel = agentsInLocationList.stream().mapToDouble(Agent::geteLevel).average().orElse(0); //avg elevel of agents in location
     }
     
     public List<Agent> getAgentsInLocationList()
@@ -43,19 +43,4 @@ public class Location extends Point
         agentsInLocationList.remove(a);
     }
     
-    /*
-    public static void main(String[] args)
-    {
-        Agent p = new Agent(50, 50, new ArrayList<>());
-        Agent q = new Agent(50, 50, new ArrayList<>());
-        p.seteLevel(5);
-        q.seteLevel(10);
-        
-        Location l = new Location(1,1);
-        l.getAgentsInUnitList().put(p, p.geteLevel());
-        l.getAgentsInUnitList().put(q, q.geteLevel());
-    
-        //System.out.println(l.calcUnitELevel());
-    }
-    */
 }

@@ -1,7 +1,6 @@
 import java.awt.*;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Agent extends Point
 {
@@ -49,6 +48,10 @@ public class Agent extends Point
         this.dangerArea = dangerArea;
     }
     
+    /**
+     * get elevel
+     * @return elevel
+     */
     public double geteLevel()
     {
         return eLevel;
@@ -71,24 +74,22 @@ public class Agent extends Point
         }
     }
     
+    /**
+     * get adjacent location list
+     * @return adj location list
+     */
     public List<Location> getAdjList()
     {
         return adjList;
     }
     
+    /**
+     * set adj list
+     * @param adjList adjlist
+     */
     public void setAdjList(List<Location> adjList)
     {
         this.adjList = adjList;
-    }
-    
-    //generates random even int
-    public static int randEvenInt(int min, int max)
-    {
-        if(min % 2 != 0)
-        {
-            ++min;
-        }
-        return min + 2 * ThreadLocalRandom.current().nextInt((max - min) / 2 + 1);
     }
     
     /**
@@ -99,39 +100,30 @@ public class Agent extends Point
     public int randCoord()
     {
         Random random = new Random();
-        //20 to gridsizemax - 5
         return (random.nextInt((maxMoveGrid / 10) - 2) + 2) * gridUnitSize;
     }
     
-    public static void main(String[] args)
-    {
-        for(int i = 0; i < 1000; i++)
-        {
-            Agent a = new Agent(110, 10, new ArrayList<>());
-            int x = a.randCoord();
-            if(x > 110)
-            {
-                System.out.println("yes!");
-            }
-        }
-    }
-    
     /**
-     * Moves agent
+     * Moves agent, sets location
      */
-    public void move()
+    public void move() throws Exception
     {
         setLocation(findNextMove());
     }
     
-    public Point findNextMove()
+    /**
+     * Finds next location
+     * @return next location
+     * @throws Exception Divide by 0, most times
+     */
+    public Point findNextMove() throws Exception
     {
-        double d = new Random().nextDouble();
+        double d = new Random().nextDouble();   //unif dist random
         double min = 0;
-        double sum = getAdjList().stream().mapToDouble(this::h1).sum();
+        double sum = getAdjList().stream().mapToDouble(this::h1).sum(); //sum of h1 of adjList
         for(Location a : getAdjList())
         {
-            min = min + (h1(a) / sum);
+            min = min + (h1(a) / sum);  //add to previous probability (0 <= min <= 1)
             
             if(d < min)
             {
@@ -139,7 +131,7 @@ public class Agent extends Point
             }
         }
         
-        return null;
+        throw new Exception("findNextMove method error, probably divide by 0");
     }
     
     /**

@@ -39,19 +39,18 @@ public class Environment extends JPanel
         initLocations();
         initAgentArray(numAgents);
         
-        
         Thread thread = new Thread(() -> {
             while(true)
             {
-                calcLocationELevel();
-                calcAgentELevel();
-                moveAgents();
-                repaint();
                 try
                 {
+                    calcLocationELevel();   //avg elevel from agents in location
+                    calcAgentELevel();  //avg elevel from adj locations
+                    moveAgents();   //move agents and add/remove from location in list
+                    repaint();
                     Thread.sleep(50);
                 }
-                catch(InterruptedException ex)
+                catch(Exception ex)
                 {
                     ex.printStackTrace();
                 }
@@ -62,6 +61,7 @@ public class Environment extends JPanel
     
     /**
      * Initializes agent array, creates agents and adds agent location to locationList
+     *
      * @param n number of agents
      */
     public void initAgentArray(int n)
@@ -91,47 +91,58 @@ public class Environment extends JPanel
                 {
                     l.setLocationELevel(510); //max eLevel
                 }
-                locationList.put(p, l);
+                locationList.put(p, l); //add location to list
             }
         }
     }
     
-    public void moveAgents()
+    /**
+     * Moves agents and removes/adds to new location
+     */
+    public void moveAgents() throws Exception
     {
         for(Agent a : agentList)
         {
             Location prev = locationList.get(a.getLocation());
             a.move();
-            prev.removeAgentsInLocationList(a);
-            locationList.get(a.getLocation()).addAgentsInLocationList(a);
+            prev.removeAgentsInLocationList(a); //remove agent from prev location
+            locationList.get(a.getLocation()).addAgentsInLocationList(a);   //add agent to new location
         }
     }
     
+    /**
+     * Calculates elevel of location from agents in location
+     */
     public void calcLocationELevel()
     {
         for(Location l : locationList.values())
         {
             l.calcLocationELevel();
             
-            if(dangerArea.contains(l))
+            if(dangerArea.contains(l)) //if agent is in dangerous area
             {
                 l.setLocationELevel(510); //max eLevel
             }
         }
     }
     
+    /**
+     * Calculates agent elevel from surrounding location elevels
+     */
     public void calcAgentELevel()
     {
         for(Agent a : agentList)
         {
             List<Point> adjList = findAdjLocation((int) a.getX(), (int) a.getY());
             List<Location> h = new ArrayList<>();
-            for(Point p : adjList)
+            for(Point p : adjList)  //find adj points, set agent adj list
             {
                 Location l = locationList.get(p);
                 h.add(l);
             }
             a.setAdjList(h);
+            
+            //find avg location elevel of adj locations and set to agent elevel (only surrounding, not including current location)
             double d = adjList.stream().mapToDouble(e -> locationList.get(e).getLocationELevel()).average().orElse(0);
             a.setELevel(d);
         }
@@ -139,6 +150,7 @@ public class Environment extends JPanel
     
     /**
      * Finds adjacent locations
+     *
      * @param x x coord
      * @param y y coord
      * @return list of adjacent locations
