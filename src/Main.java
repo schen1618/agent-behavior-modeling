@@ -11,8 +11,8 @@ public class Main
     
     public static void main(String[] args)
     {
-        Environment e1 = new Environment(gridSize + 1, numAgents, agentType, generateDangerArea());
-        Environment e2 = new EnvironmentDensity(gridSize + 1, numAgents, agentType, generateDangerArea());
+        Environment e1 = new Environment(gridSize, numAgents, agentType, generateDangerArea(), "torus");
+        Environment e2 = new EnvironmentDensity(gridSize, numAgents, agentType, generateDangerArea(), "torus");
         display(e1, new Color(69, 69, 69));
         display(e2, new Color(255, 255, 255));
     }

@@ -3,9 +3,9 @@ import java.awt.*;
 public class EnvironmentDensity extends Environment
 {
     
-    public EnvironmentDensity(int gridSize, int numAgents, String agentType, java.util.List<Point> dangerArea)
+    public EnvironmentDensity(int gridSize, int numAgents, String agentType, java.util.List<Point> dangerArea, String boundType)
     {
-        super(gridSize, numAgents, agentType, dangerArea);
+        super(gridSize, numAgents, agentType, dangerArea, boundType);
     }
     
     @Override

@@ -28,7 +28,7 @@ public class Environment extends JPanel
     
     String heuristic;
     
-    public Environment(int gridSize, int numAgents, String agentType, List<Point> dangerArea)
+    public Environment(int gridSize, int numAgents, String agentType, List<Point> dangerArea, String boundType)
     {
         this.gridSizePixel = gridSize * gridUnitSize;
         this.numAgents = numAgents;
@@ -42,7 +42,7 @@ public class Environment extends JPanel
                 try
                 {
                     calcLocationELevel();   //avg elevel from agents in location
-                    calcAgentELevel();  //avg elevel from adj locations
+                    calcAgentELevel(boundType);  //avg elevel from adj locations and find adj locations to move
                     moveAgents();   //move agents and add/remove from location in list
                     repaint();
                     Thread.sleep(50);
@@ -96,9 +96,9 @@ public class Environment extends JPanel
      */
     public void initLocations()
     {
-        for(int x = gridPixelStart + 5; x <= gridSizePixel; x += gridUnitSize)
+        for(int x = gridPixelStart + 5; x <= gridSizePixel + gridUnitSize; x += gridUnitSize)
         {
-            for(int y = gridPixelStart + 5; y <= gridSizePixel; y += gridUnitSize)
+            for(int y = gridPixelStart + 5; y <= gridSizePixel + gridUnitSize; y += gridUnitSize)
             {
                 Point p = new Point(x, y);
                 Location l = new Location(x, y);
@@ -144,11 +144,11 @@ public class Environment extends JPanel
     /**
      * Calculates agent elevel from surrounding location elevels
      */
-    public void calcAgentELevel()
+    public void calcAgentELevel(String boundType)
     {
         for(Agent a : agentList)
         {
-            List<Point> adjList = findAdjLocation((int) a.getX(), (int) a.getY());
+            List<Point> adjList = findAdjLocation((int) a.getX(), (int) a.getY(), boundType);
             List<Location> h = new ArrayList<>();
             for(Point p : adjList)  //find adj points, set agent adj list
             {
@@ -171,41 +171,77 @@ public class Environment extends JPanel
      * @param y y coord
      * @return list of adjacent locations
      */
-    public List<Point> findAdjLocation(int x, int y)
+    public List<Point> findAdjLocation(int x, int y, String boundType)
     {
         List<Point> a = new ArrayList<>();
         
-        if(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)) != null)
+        if(boundType.equals("bound"))
         {
-            a.add(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)));
+            if(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)) != null)
+            {
+                a.add(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)));
+            }
+            if(locationList.get(new Point(x - gridUnitSize, y)) != null)
+            {
+                a.add(locationList.get(new Point(x - gridUnitSize, y)));
+            }
+            if(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)) != null)
+            {
+                a.add(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)));
+            }
+            if(locationList.get(new Point(x, y - gridUnitSize)) != null)
+            {
+                a.add(locationList.get(new Point(x, y - gridUnitSize)));
+            }
+            if(locationList.get(new Point(x, y + gridUnitSize)) != null)
+            {
+                a.add(locationList.get(new Point(x, y + gridUnitSize)));
+            }
+            if(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)) != null)
+            {
+                a.add(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)));
+            }
+            if(locationList.get(new Point(x + gridUnitSize, y)) != null)
+            {
+                a.add(locationList.get(new Point(x + gridUnitSize, y)));
+            }
+            if(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)) != null)
+            {
+                a.add(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)));
+            }
         }
-        if(locationList.get(new Point(x - gridUnitSize, y)) != null)
+        
+        if(boundType.equals("torus"))
         {
-            a.add(locationList.get(new Point(x - gridUnitSize, y)));
-        }
-        if(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)) != null)
-        {
-            a.add(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)));
-        }
-        if(locationList.get(new Point(x, y - gridUnitSize)) != null)
-        {
-            a.add(locationList.get(new Point(x, y - gridUnitSize)));
-        }
-        if(locationList.get(new Point(x, y + gridUnitSize)) != null)
-        {
-            a.add(locationList.get(new Point(x, y + gridUnitSize)));
-        }
-        if(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)) != null)
-        {
-            a.add(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)));
-        }
-        if(locationList.get(new Point(x + gridUnitSize, y)) != null)
-        {
-            a.add(locationList.get(new Point(x + gridUnitSize, y)));
-        }
-        if(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)) != null)
-        {
-            a.add(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)));
+            int newxUp = x - gridUnitSize;
+            int newxDown = x + gridUnitSize;
+            int newyLeft = y - gridUnitSize;
+            int newyRight = y + gridUnitSize;
+            if(newxUp < 20)
+            {
+                newxUp = gridSizePixel + gridUnitSize;
+            }
+            if(newxDown > gridSizePixel + gridUnitSize)
+            {
+                newxDown = 20;
+            }
+            if(newyLeft < 20)
+            {
+                newyLeft = gridSizePixel + gridUnitSize;
+            }
+            if(newyRight > gridSizePixel + gridUnitSize)
+            {
+                newyRight = 20;
+            }
+            
+            a.add(locationList.get(new Point(newxUp, newyLeft)));
+            a.add(locationList.get(new Point(newxUp, y)));
+            a.add(locationList.get(new Point(newxUp, newyRight)));
+            a.add(locationList.get(new Point(x, newyLeft)));
+            a.add(locationList.get(new Point(x, newyRight)));
+            a.add(locationList.get(new Point(newxDown, newyLeft)));
+            a.add(locationList.get(new Point(newxDown, y)));
+            a.add(locationList.get(new Point(newxDown, newyRight)));
         }
         
         return a;
@@ -224,9 +260,9 @@ public class Environment extends JPanel
         }
         
         g.setColor(Color.WHITE);
-        for(int x = gridPixelStart; x <= gridSizePixel; x += gridUnitSize)
+        for(int x = gridPixelStart; x <= gridSizePixel + gridUnitSize; x += gridUnitSize)
         {
-            for(int y = gridPixelStart; y <= gridSizePixel; y += gridUnitSize)
+            for(int y = gridPixelStart; y <= gridSizePixel + gridUnitSize; y += gridUnitSize)
             {
                 g.drawRect(x, y, gridUnitSize, gridUnitSize);
             }

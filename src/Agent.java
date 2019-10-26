@@ -131,7 +131,9 @@ public abstract class Agent extends Point
         double sum = getAdjList().stream().mapToDouble(this::calcMoveProb).sum(); //sum of h1 of adjList
         for(Location a : getAdjList())
         {
-            min = min + (calcMoveProb(a) / sum);  //add to previous probability (0 <= min <= 1)
+            double x = calcMoveProb(a) / sum;
+            min = min + x;
+            //min = min + (calcMoveProb(a) / sum);  //add to previous probability (0 <= min <= 1)
             
             if(d < min)
             {
