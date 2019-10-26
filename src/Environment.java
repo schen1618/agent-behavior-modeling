@@ -18,7 +18,7 @@ public class Environment extends JPanel
     int numAgents;
     
     //list that contains agents
-    List<Agent> agentList = new ArrayList<>();
+    java.util.List<Agent> agentList = new ArrayList<>();
     
     //list that contains locations
     HashMap<Point, Location> locationList = new HashMap<>();
@@ -26,18 +26,15 @@ public class Environment extends JPanel
     //list that contains danger locations
     List<Point> dangerArea;
     
-    public Environment(int gridSize, int numAgents)
-    {
-        this(gridSize, numAgents, new ArrayList<>());
-    }
+    String heuristic;
     
-    public Environment(int gridSize, int numAgents, List<Point> dangerArea)
+    public Environment(int gridSize, int numAgents, String agentType, List<Point> dangerArea)
     {
         this.gridSizePixel = gridSize * gridUnitSize;
         this.numAgents = numAgents;
         this.dangerArea = dangerArea;
         initLocations();
-        initAgentArray(numAgents);
+        initAgentArray(numAgents, agentType);
         
         Thread thread = new Thread(() -> {
             while(true)
@@ -60,19 +57,37 @@ public class Environment extends JPanel
     }
     
     /**
-     * Initializes agent array, creates agents and adds agent location to locationList
+     * Initializes agent array, creates agents, sets random agent location, and adds agent location to locationList
      *
      * @param n number of agents
      */
-    public void initAgentArray(int n)
+    public void initAgentArray(int n, String agentType)
     {
-        for(int i = 0; i < n; i++)
+        int len = locationList.keySet().toArray().length;
+        Object[] locationArray = locationList.keySet().toArray();
+        
+        if(agentType.equals("AgentA"))
         {
-            Agent agent = new Agent(gridSizePixel, gridUnitSize, dangerArea);
-            agentList.add(agent);
-            int x = (int) agent.getX();
-            int y = (int) agent.getY();
-            locationList.get(new Point(x, y)).addAgentsInLocationList(agent);
+            for(int i = 0; i < n; i++)
+            {
+                AgentA agent = new AgentA(gridSizePixel, gridUnitSize, dangerArea, heuristic);
+                agentList.add(agent);
+                Point p = (Point) locationArray[new Random().nextInt(len)];
+                agent.setLocation(p);
+                locationList.get(p).addAgentsInLocationList(agent);
+            }
+        }
+        
+        else if(agentType.equals("AgentB"))
+        {
+            for(int i = 0; i < n; i++)
+            {
+                AgentB agent = new AgentB(gridSizePixel, gridUnitSize, dangerArea, heuristic);
+                agentList.add(agent);
+                Point p = (Point) locationArray[new Random().nextInt(len)];
+                agent.setLocation(p);
+                locationList.get(p).addAgentsInLocationList(agent);
+            }
         }
     }
     
@@ -142,7 +157,8 @@ public class Environment extends JPanel
             }
             a.setAdjList(h);
             
-            //find avg location elevel of adj locations and set to agent elevel (only surrounding, not including current location)
+            //find avg location elevel of adj locations and set to agent elevel (only surrounding, not including
+            // current location)
             double d = adjList.stream().mapToDouble(e -> locationList.get(e).getLocationELevel()).average().orElse(0);
             a.setELevel(d);
         }
@@ -195,6 +211,7 @@ public class Environment extends JPanel
         return a;
     }
     
+    @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);

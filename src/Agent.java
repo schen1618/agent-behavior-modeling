@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 
-public class Agent extends Point
+public abstract class Agent extends Point
 {
     //agent size
     float radius = 5;
@@ -38,18 +38,22 @@ public class Agent extends Point
     
     List<Location> adjList = new ArrayList<>();
     
-    public Agent(int gridSizePixel, int gridUnitSize, List<Point> dangerArea)
+    String heuristic;
+    
+    public Agent(int gridSizePixel, int gridUnitSize, List<Point> dangerArea, String heuristic)
     {
         this.gridSizePixel = gridSizePixel;
         this.gridUnitSize = gridUnitSize;
         maxMoveGrid = gridSizePixel + 10;
-        setLocation(randCoord(), randCoord());
+        //setLocation(randCoord(), randCoord());
         eLevel = 0;
         this.dangerArea = dangerArea;
+        this.heuristic = heuristic;
     }
     
     /**
      * get elevel
+     *
      * @return elevel
      */
     public double geteLevel()
@@ -76,6 +80,7 @@ public class Agent extends Point
     
     /**
      * get adjacent location list
+     *
      * @return adj location list
      */
     public List<Location> getAdjList()
@@ -85,6 +90,7 @@ public class Agent extends Point
     
     /**
      * set adj list
+     *
      * @param adjList adjlist
      */
     public void setAdjList(List<Location> adjList)
@@ -113,6 +119,7 @@ public class Agent extends Point
     
     /**
      * Finds next location
+     *
      * @return next location
      * @throws Exception Divide by 0, most times
      */
@@ -120,10 +127,11 @@ public class Agent extends Point
     {
         double d = new Random().nextDouble();   //unif dist random
         double min = 0;
-        double sum = getAdjList().stream().mapToDouble(this::h1).sum(); //sum of h1 of adjList
+        
+        double sum = getAdjList().stream().mapToDouble(this::calcMoveProb).sum(); //sum of h1 of adjList
         for(Location a : getAdjList())
         {
-            min = min + (h1(a) / sum);  //add to previous probability (0 <= min <= 1)
+            min = min + (calcMoveProb(a) / sum);  //add to previous probability (0 <= min <= 1)
             
             if(d < min)
             {
@@ -134,30 +142,7 @@ public class Agent extends Point
         throw new Exception("findNextMove method error, probably divide by 0");
     }
     
-    /**
-     * Movement decision 1
-     *
-     * @param e location
-     * @return calculation
-     */
-    public double h1(Location e)
-    {
-        double p = 1;
-        double q = 1;
-        //Math.exp(-1 * b * e.getLocationELevel() * (e.getAgentsInLocationList().size() + 1));
-        return Math.exp(-1 * p * e.getLocationELevel()) + Math.exp(-1 * q * e.getAgentsInLocationList().size());
-    }
-    
-    /**
-     * Movement decision 2
-     *
-     * @param e location
-     * @return calculation
-     */
-    public double h2(Location e)
-    {
-        return Math.exp(-1 * geteLevel() * e.getAgentsInLocationList().size());
-    }
+    public abstract double calcMoveProb(Location e);
     
     /**
      * Randomly moves agent
