@@ -3,7 +3,8 @@ import java.awt.*;
 public class EnvironmentDensity extends Environment
 {
     
-    public EnvironmentDensity(int gridSize, int numAgents, String agentType, java.util.List<Point> dangerArea, String boundType)
+    public EnvironmentDensity(int gridSize, int numAgents, String agentType, java.util.List<Point> dangerArea,
+                              String boundType)
     {
         super(gridSize, numAgents, agentType, dangerArea, boundType);
     }
@@ -34,12 +35,13 @@ public class EnvironmentDensity extends Environment
         {
             //double num = (l.getAgentsInLocationList().size() / (double) Main.numAgents) * 255.0;
             
-            double num = l.getAgentsInLocationList().size();
+            double num = l.getAgentsInLocationList().size() * 2;
             
-            if(num < 255)
+            if(num > 255)
             {
-                g.setColor(new Color(255 - (int) num, 255 - (int) num, 255 - (int) num));
+                num = 255;
             }
+            g.setColor(new Color(255 - (int) num, 255 - (int) num, 255 - (int) num));
             
             //g.setColor(new Color((int) num, (int) num, (int) num));
             
