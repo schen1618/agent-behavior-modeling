@@ -1,9 +1,8 @@
-import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
 
-public class Environment extends JPanel
+public class Environment
 {
     //total grid size in pixels
     int gridSizePixel;
@@ -35,25 +34,16 @@ public class Environment extends JPanel
         this.dangerArea = dangerArea;
         initLocations();
         initAgentArray(numAgents, agentType);
-        
-        Thread thread = new Thread(() -> {
-            while(true)
-            {
-                try
-                {
-                    calcLocationELevel();   //avg elevel from agents in location
-                    calcAgentELevel(boundType);  //avg elevel from adj locations and find adj locations to move
-                    moveAgents();   //move agents and add/remove from location in list
-                    repaint();
-                    Thread.sleep(50);
-                }
-                catch(Exception ex)
-                {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        thread.start();
+    }
+    
+    public HashMap<Point, Location> getLocationList()
+    {
+        return locationList;
+    }
+    
+    public List<Agent> getAgentList()
+    {
+        return agentList;
     }
     
     /**
@@ -245,42 +235,5 @@ public class Environment extends JPanel
         }
         
         return a;
-    }
-    
-    @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        g.setColor(new Color(227, 227, 227));
-        
-        for(Point p : dangerArea)
-        {
-            g.fillRect((int) p.getX() - (gridUnitSize / 2), (int) p.getY() - (gridUnitSize / 2), gridUnitSize,
-                    gridUnitSize);
-        }
-        
-        g.setColor(Color.WHITE);
-        for(int x = gridPixelStart; x <= gridSizePixel + gridUnitSize; x += gridUnitSize)
-        {
-            for(int y = gridPixelStart; y <= gridSizePixel + gridUnitSize; y += gridUnitSize)
-            {
-                g.drawRect(x, y, gridUnitSize, gridUnitSize);
-            }
-        }
-        
-        for(Agent agent : agentList)
-        {
-            if(agent.geteLevel() > 255)
-            {
-                g.setColor(new Color(255, 510 - (int) agent.geteLevel(), 0));
-            }
-            else
-            {
-                g.setColor(new Color((int) agent.geteLevel(), 255, 0));
-            }
-            
-            g.fillOval((int) (agent.getX() - agent.radius), (int) (agent.getY() - agent.radius), (int) agent.diameter,
-                    (int) agent.diameter);
-        }
     }
 }

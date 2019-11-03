@@ -14,10 +14,31 @@ public class Main
     public static void main(String[] args)
     {
         java.util.List<Point> dangerArea = generateDangerArea(150, 200);
-        Environment e1 = new Environment(gridSize, numAgents, agentType, dangerArea, boundType);
-        Environment e2 = new EnvironmentDensity(gridSize, numAgents, agentType, dangerArea, boundType);
-        display(e1, new Color(69, 69, 69));
-        display(e2, new Color(255, 255, 255));
+        Environment e = new Environment(gridSize, numAgents, agentType, dangerArea, boundType);
+        Display emotion = new EmotionDisplay(e);
+        Display density = new DensityDisplay(e);
+        display(emotion, new Color(69, 69, 69));
+        display(density, new Color(255, 255, 255));
+        
+        Thread thread = new Thread(() -> {
+            while(true)
+            {
+                try
+                {
+                    e.calcLocationELevel();   //avg elevel from agents in location
+                    e.calcAgentELevel(boundType);  //avg elevel from adj locations and find adj locations to move
+                    e.moveAgents();   //move agents and add/remove from location in list
+                    emotion.repaint();
+                    density.repaint();
+                    Thread.sleep(50);
+                }
+                catch(Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        thread.start();
     }
     
     /**
@@ -43,14 +64,14 @@ public class Main
     /**
      * Creates JFrame and formats
      *
-     * @param e environment to be displayed
-     * @param c color of environment background
+     * @param d display
+     * @param c color of display background
      */
-    public static void display(Environment e, Color c)
+    public static void display(Display d, Color c)
     {
         JFrame frame = new JFrame();
-        frame.setTitle(e.getClass().getSimpleName());
-        frame.setContentPane(e);
+        frame.setTitle(d.getClass().getSimpleName());
+        frame.setContentPane(d);
         frame.getContentPane().setBackground(c);
         frame.setSize((gridSize + 1) * 10 + 50, (gridSize + 1) * 10 + 50);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

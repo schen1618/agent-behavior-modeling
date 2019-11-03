@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="794df966-757b-405c-8838-c40b252f987a" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Display.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/EmotionDisplay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AgentB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AgentB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Environment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Environment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EnvironmentDensity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DensityDisplay.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -167,7 +170,7 @@
       <workItem from="1572023875845" duration="42000" />
       <workItem from="1572024134915" duration="20493000" />
       <workItem from="1572650232776" duration="125000" />
-      <workItem from="1572650539173" duration="2866000" />
+      <workItem from="1572650539173" duration="4779000" />
     </task>
     <servers />
   </component>
@@ -192,7 +195,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Environment.java</url>
-          <line>161</line>
+          <line>151</line>
           <properties>
             <option name="lambda-ordinal" value="-1" />
           </properties>
@@ -200,7 +203,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Environment.java</url>
-          <line>100</line>
+          <line>90</line>
           <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>

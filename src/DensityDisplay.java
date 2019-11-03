@@ -1,12 +1,11 @@
 import java.awt.*;
 
-public class EnvironmentDensity extends Environment
+public class DensityDisplay extends Display
 {
     
-    public EnvironmentDensity(int gridSize, int numAgents, String agentType, java.util.List<Point> dangerArea,
-                              String boundType)
+    public DensityDisplay(Environment e)
     {
-        super(gridSize, numAgents, agentType, dangerArea, boundType);
+        super(e);
     }
     
     @Override
@@ -31,7 +30,7 @@ public class EnvironmentDensity extends Environment
             }
         }*/
         
-        for(Location l : locationList.values())
+        for(Location l : e.getLocationList().values())
         {
             //double num = (l.getAgentsInLocationList().size() / (double) Main.numAgents) * 255.0;
             
@@ -45,8 +44,9 @@ public class EnvironmentDensity extends Environment
             
             //g.setColor(new Color((int) num, (int) num, (int) num));
             
-            g.fillRect((int) l.getX() - (gridUnitSize / 2), (int) l.getY() - (gridUnitSize / 2), (int) gridUnitSize,
-                    (int) gridUnitSize);
+            g.fillRect((int) l.getX() - (e.gridUnitSize / 2), (int) l.getY() - (e.gridUnitSize / 2),
+                    (int) e.gridUnitSize,
+                    (int) e.gridUnitSize);
         }
     }
 }
