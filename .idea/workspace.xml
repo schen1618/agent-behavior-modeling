@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="794df966-757b-405c-8838-c40b252f987a" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EnvironmentDensity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EnvironmentDensity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/AgentB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AgentB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Location.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Location.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -163,7 +165,9 @@
       <workItem from="1570586699469" duration="21295000" />
       <workItem from="1571365624351" duration="736000" />
       <workItem from="1572023875845" duration="42000" />
-      <workItem from="1572024134915" duration="17596000" />
+      <workItem from="1572024134915" duration="20493000" />
+      <workItem from="1572650232776" duration="125000" />
+      <workItem from="1572650539173" duration="2866000" />
     </task>
     <servers />
   </component>
@@ -186,11 +190,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/Agent.java</url>
-          <line>137</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Environment.java</url>
           <line>161</line>

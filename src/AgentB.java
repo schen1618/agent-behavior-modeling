@@ -14,8 +14,7 @@ public class AgentB extends Agent
     {
         double p = 1 / 510.0;
         double q = 1.0 / Main.numAgents;
-        double x = Math.
+        return Math.
                 exp(-1 * p * e.getLocationELevel() * (q * (e.getAgentsInLocationList().size() + 1)) * p * geteLevel());
-        return x;
     }
 }
