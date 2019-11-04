@@ -4,6 +4,11 @@ import java.util.*;
 
 public class Environment
 {
+    public enum BoundaryType
+    {
+        BOUND, TORUS
+    }
+    
     //total grid size in pixels
     int gridSizePixel;
     
@@ -17,7 +22,7 @@ public class Environment
     int numAgents;
     
     //list that contains agents
-    java.util.List<Agent> agentList = new ArrayList<>();
+    List<Agent> agentList = new ArrayList<>();
     
     //list that contains locations
     HashMap<Point, Location> locationList = new HashMap<>();
@@ -25,14 +30,17 @@ public class Environment
     //list that contains danger locations
     List<Point> dangerArea;
     
+    BoundaryType boundaryType;
     
-    public Environment(int gridSize, int numAgents, String agentType, List<Point> dangerArea, String boundType)
+    public Environment(int gridSize, int numAgents, Movement movement, List<Point> dangerArea,
+                       BoundaryType boundaryType)
     {
         this.gridSizePixel = gridSize * gridUnitSize;
         this.numAgents = numAgents;
         this.dangerArea = dangerArea;
+        this.boundaryType = boundaryType;
         initLocations();
-        initAgentArray(numAgents, agentType);
+        initAgentArray(numAgents, movement);
     }
     
     public HashMap<Point, Location> getLocationList()
@@ -50,33 +58,18 @@ public class Environment
      *
      * @param n number of agents
      */
-    public void initAgentArray(int n, String agentType)
+    public void initAgentArray(int n, Movement movement)
     {
         int len = locationList.keySet().toArray().length;
         Object[] locationArray = locationList.keySet().toArray();
         
-        if(agentType.equals("AgentA"))
+        for(int i = 0; i < n; i++)
         {
-            for(int i = 0; i < n; i++)
-            {
-                AgentA agent = new AgentA(gridSizePixel, gridUnitSize, dangerArea);
-                agentList.add(agent);
-                Point p = (Point) locationArray[new Random().nextInt(len)];
-                agent.setLocation(p);
-                locationList.get(p).addAgentsInLocationList(agent);
-            }
-        }
-        
-        else if(agentType.equals("AgentB"))
-        {
-            for(int i = 0; i < n; i++)
-            {
-                AgentB agent = new AgentB(gridSizePixel, gridUnitSize, dangerArea);
-                agentList.add(agent);
-                Point p = (Point) locationArray[new Random().nextInt(len)];
-                agent.setLocation(p);
-                locationList.get(p).addAgentsInLocationList(agent);
-            }
+            Agent agent = new Agent(gridSizePixel, gridUnitSize, dangerArea, movement);
+            agentList.add(agent);
+            Point p = (Point) locationArray[new Random().nextInt(len)];
+            agent.setLocation(p);
+            locationList.get(p).addAgentsInLocationList(agent);
         }
     }
     
@@ -133,11 +126,11 @@ public class Environment
     /**
      * Calculates agent elevel from surrounding location elevels
      */
-    public void calcAgentELevel(String boundType)
+    public void calcAgentELevel()
     {
         for(Agent a : agentList)
         {
-            List<Point> adjList = findAdjLocation((int) a.getX(), (int) a.getY(), boundType);
+            List<Point> adjList = findAdjLocation(a.x, a.y);
             List<Location> h = new ArrayList<>();
             for(Point p : adjList)  //find adj points, set agent adj list
             {
@@ -160,79 +153,80 @@ public class Environment
      * @param y y coord
      * @return list of adjacent locations
      */
-    public List<Point> findAdjLocation(int x, int y, String boundType)
+    public List<Point> findAdjLocation(int x, int y)
     {
         List<Point> a = new ArrayList<>();
         
-        if(boundType.equals("bound"))
+        switch(boundaryType)
         {
-            if(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)) != null)
-            {
-                a.add(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)));
-            }
-            if(locationList.get(new Point(x - gridUnitSize, y)) != null)
-            {
-                a.add(locationList.get(new Point(x - gridUnitSize, y)));
-            }
-            if(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)) != null)
-            {
-                a.add(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)));
-            }
-            if(locationList.get(new Point(x, y - gridUnitSize)) != null)
-            {
-                a.add(locationList.get(new Point(x, y - gridUnitSize)));
-            }
-            if(locationList.get(new Point(x, y + gridUnitSize)) != null)
-            {
-                a.add(locationList.get(new Point(x, y + gridUnitSize)));
-            }
-            if(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)) != null)
-            {
-                a.add(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)));
-            }
-            if(locationList.get(new Point(x + gridUnitSize, y)) != null)
-            {
-                a.add(locationList.get(new Point(x + gridUnitSize, y)));
-            }
-            if(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)) != null)
-            {
-                a.add(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)));
-            }
+            case BOUND:
+                if(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)) != null)
+                {
+                    a.add(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)));
+                }
+                if(locationList.get(new Point(x - gridUnitSize, y)) != null)
+                {
+                    a.add(locationList.get(new Point(x - gridUnitSize, y)));
+                }
+                if(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)) != null)
+                {
+                    a.add(locationList.get(new Point(x - gridUnitSize, y + gridUnitSize)));
+                }
+                if(locationList.get(new Point(x, y - gridUnitSize)) != null)
+                {
+                    a.add(locationList.get(new Point(x, y - gridUnitSize)));
+                }
+                if(locationList.get(new Point(x, y + gridUnitSize)) != null)
+                {
+                    a.add(locationList.get(new Point(x, y + gridUnitSize)));
+                }
+                if(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)) != null)
+                {
+                    a.add(locationList.get(new Point(x + gridUnitSize, y - gridUnitSize)));
+                }
+                if(locationList.get(new Point(x + gridUnitSize, y)) != null)
+                {
+                    a.add(locationList.get(new Point(x + gridUnitSize, y)));
+                }
+                if(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)) != null)
+                {
+                    a.add(locationList.get(new Point(x + gridUnitSize, y + gridUnitSize)));
+                }
+                return a;
+                
+            case TORUS:
+                int newxUp = x - gridUnitSize;
+                int newxDown = x + gridUnitSize;
+                int newyLeft = y - gridUnitSize;
+                int newyRight = y + gridUnitSize;
+                if(newxUp < 20)
+                {
+                    newxUp = gridSizePixel + gridUnitSize;
+                }
+                if(newxDown > gridSizePixel + gridUnitSize)
+                {
+                    newxDown = 20;
+                }
+                if(newyLeft < 20)
+                {
+                    newyLeft = gridSizePixel + gridUnitSize;
+                }
+                if(newyRight > gridSizePixel + gridUnitSize)
+                {
+                    newyRight = 20;
+                }
+                
+                a.add(locationList.get(new Point(newxUp, newyLeft)));
+                a.add(locationList.get(new Point(newxUp, y)));
+                a.add(locationList.get(new Point(newxUp, newyRight)));
+                a.add(locationList.get(new Point(x, newyLeft)));
+                a.add(locationList.get(new Point(x, newyRight)));
+                a.add(locationList.get(new Point(newxDown, newyLeft)));
+                a.add(locationList.get(new Point(newxDown, y)));
+                a.add(locationList.get(new Point(newxDown, newyRight)));
+                return a;
+            default:
+                throw new IllegalArgumentException("Boundary type is not handled");
         }
-        
-        if(boundType.equals("torus"))
-        {
-            int newxUp = x - gridUnitSize;
-            int newxDown = x + gridUnitSize;
-            int newyLeft = y - gridUnitSize;
-            int newyRight = y + gridUnitSize;
-            if(newxUp < 20)
-            {
-                newxUp = gridSizePixel + gridUnitSize;
-            }
-            if(newxDown > gridSizePixel + gridUnitSize)
-            {
-                newxDown = 20;
-            }
-            if(newyLeft < 20)
-            {
-                newyLeft = gridSizePixel + gridUnitSize;
-            }
-            if(newyRight > gridSizePixel + gridUnitSize)
-            {
-                newyRight = 20;
-            }
-            
-            a.add(locationList.get(new Point(newxUp, newyLeft)));
-            a.add(locationList.get(new Point(newxUp, y)));
-            a.add(locationList.get(new Point(newxUp, newyRight)));
-            a.add(locationList.get(new Point(x, newyLeft)));
-            a.add(locationList.get(new Point(x, newyRight)));
-            a.add(locationList.get(new Point(newxDown, newyLeft)));
-            a.add(locationList.get(new Point(newxDown, y)));
-            a.add(locationList.get(new Point(newxDown, newyRight)));
-        }
-        
-        return a;
     }
 }

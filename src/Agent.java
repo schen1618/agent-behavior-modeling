@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 
-public abstract class Agent extends Point
+public class Agent extends Point
 {
     //agent size
     float radius = 5;
@@ -26,10 +26,10 @@ public abstract class Agent extends Point
     private int maxELevel = 510;
     
     private List<Point> dangerArea;
-    
+    private Movement movement;
     List<Location> adjList = new ArrayList<>();
     
-    public Agent(int gridSizePixel, int gridUnitSize, List<Point> dangerArea)
+    public Agent(int gridSizePixel, int gridUnitSize, List<Point> dangerArea, Movement movement)
     {
         this.gridSizePixel = gridSizePixel;
         this.gridUnitSize = gridUnitSize;
@@ -37,6 +37,7 @@ public abstract class Agent extends Point
         //setLocation(randCoord(), randCoord());
         eLevel = 0;
         this.dangerArea = dangerArea;
+        this.movement = movement;
     }
     
     /**
@@ -116,10 +117,10 @@ public abstract class Agent extends Point
         double d = new Random().nextDouble();   //unif dist random
         double min = 0;
         
-        double sum = getAdjList().stream().mapToDouble(this::calcMoveProb).sum(); //sum of h1 of adjList
+        double sum = getAdjList().stream().mapToDouble((loc) -> movement.probability(loc, this)).sum(); //sum of h1 of adjList
         for(Location a : getAdjList())
         {
-            double x = calcMoveProb(a) / sum;
+            double x = movement.probability(a, this) / sum;
             min = min + x;
             //min = min + (calcMoveProb(a) / sum);  //add to previous probability (0 <= min <= 1)
             
@@ -131,8 +132,6 @@ public abstract class Agent extends Point
         
         throw new Exception("findNextMove method error, probably divide by 0");
     }
-    
-    public abstract double calcMoveProb(Location e);
     
 }
 
