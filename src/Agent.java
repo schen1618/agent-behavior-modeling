@@ -11,15 +11,6 @@ public abstract class Agent extends Point
     //step size for agent (pixel)
     private int step = 10;
     
-    //possible moves
-    private int[] moves = {0, step, -1 * step};
-    
-    //possible corner moves for left + top
-    private int[] leftTopBorderMoves = {0, step};
-    
-    //possible corner moves for right + bottom
-    private int[] rightBottomBorderMoves = {0, -1 * step};
-    
     //total grid size (pixel)
     private int gridSizePixel;
     
@@ -38,9 +29,7 @@ public abstract class Agent extends Point
     
     List<Location> adjList = new ArrayList<>();
     
-    String heuristic;
-    
-    public Agent(int gridSizePixel, int gridUnitSize, List<Point> dangerArea, String heuristic)
+    public Agent(int gridSizePixel, int gridUnitSize, List<Point> dangerArea)
     {
         this.gridSizePixel = gridSizePixel;
         this.gridUnitSize = gridUnitSize;
@@ -48,7 +37,6 @@ public abstract class Agent extends Point
         //setLocation(randCoord(), randCoord());
         eLevel = 0;
         this.dangerArea = dangerArea;
-        this.heuristic = heuristic;
     }
     
     /**
@@ -146,48 +134,5 @@ public abstract class Agent extends Point
     
     public abstract double calcMoveProb(Location e);
     
-    /**
-     * Randomly moves agent
-     */
-    public void moveRandom()
-    {
-        int dx;
-        int dy;
-        Random rand = new Random();
-        
-        if(getX() == 20) //left edge
-        {
-            int r = rand.nextInt(leftTopBorderMoves.length);
-            dx = leftTopBorderMoves[r];
-        }
-        else if(getX() == gridSizePixel) //right edge
-        {
-            int r = rand.nextInt(rightBottomBorderMoves.length);
-            dx = rightBottomBorderMoves[r];
-        }
-        else
-        {
-            int r = rand.nextInt(moves.length);
-            dx = moves[r];
-        }
-        
-        if(getY() == 20) //top edge
-        {
-            int r = rand.nextInt(leftTopBorderMoves.length);
-            dy = leftTopBorderMoves[r];
-        }
-        else if(getY() == gridSizePixel) //bottom edge
-        {
-            int r = rand.nextInt(rightBottomBorderMoves.length);
-            dy = rightBottomBorderMoves[r];
-        }
-        else
-        {
-            int r = rand.nextInt(moves.length);
-            dy = moves[r];
-        }
-        
-        setLocation(getX() + dx, getY() + dy);
-    }
 }
 

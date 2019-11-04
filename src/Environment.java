@@ -25,7 +25,6 @@ public class Environment
     //list that contains danger locations
     List<Point> dangerArea;
     
-    String heuristic;
     
     public Environment(int gridSize, int numAgents, String agentType, List<Point> dangerArea, String boundType)
     {
@@ -60,7 +59,7 @@ public class Environment
         {
             for(int i = 0; i < n; i++)
             {
-                AgentA agent = new AgentA(gridSizePixel, gridUnitSize, dangerArea, heuristic);
+                AgentA agent = new AgentA(gridSizePixel, gridUnitSize, dangerArea);
                 agentList.add(agent);
                 Point p = (Point) locationArray[new Random().nextInt(len)];
                 agent.setLocation(p);
@@ -72,7 +71,7 @@ public class Environment
         {
             for(int i = 0; i < n; i++)
             {
-                AgentB agent = new AgentB(gridSizePixel, gridUnitSize, dangerArea, heuristic);
+                AgentB agent = new AgentB(gridSizePixel, gridUnitSize, dangerArea);
                 agentList.add(agent);
                 Point p = (Point) locationArray[new Random().nextInt(len)];
                 agent.setLocation(p);

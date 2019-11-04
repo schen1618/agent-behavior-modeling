@@ -34,15 +34,13 @@ public class DensityDisplay extends Display
         {
             //double num = (l.getAgentsInLocationList().size() / (double) Main.numAgents) * 255.0;
             
-            double num = l.getAgentsInLocationList().size() * 2;
+            double num = l.getAgentsInLocationList().size() * 5;
             
             if(num > 255)
             {
                 num = 255;
             }
             g.setColor(new Color(255 - (int) num, 255 - (int) num, 255 - (int) num));
-            
-            //g.setColor(new Color((int) num, (int) num, (int) num));
             
             g.fillRect((int) l.getX() - (e.gridUnitSize / 2), (int) l.getY() - (e.gridUnitSize / 2),
                     (int) e.gridUnitSize,
