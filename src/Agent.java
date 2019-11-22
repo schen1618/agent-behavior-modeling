@@ -63,7 +63,8 @@ public class Agent extends Point
         }
         else
         {
-            eLevel = avg;
+            double b = 0.90;
+            eLevel = b * avg;
         }
     }
     

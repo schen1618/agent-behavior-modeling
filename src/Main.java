@@ -3,7 +3,6 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 
-//TODO stay in same location
 public class Main
 {
     static final int numAgents = 50000;   // number of agents
@@ -19,13 +18,13 @@ public class Main
         double q = 1.0; // Main.numAgents;
         return Math.exp(-1 * p * location.getLocationELevel() * (q * (location.getAgentsInLocationList().size() + 1)) * p * agent.geteLevel());
     });
-    static Environment.BoundaryType boundaryType = Environment.BoundaryType.TORUS; // bound types: BOUND, TORUS
+    static Environment.BoundaryType boundaryType = Environment.BoundaryType.BOUND; // bound types: BOUND, TORUS
     private static int numWin = 0;  // number of windows (for nice display)
     
     public static void main(String[] args)
     {
         java.util.List<Point> dangerArea = generateDangerArea(150, 250);
-        Environment e = new Environment(gridSize, numAgents, A, dangerArea, boundaryType);
+        Environment e = new EnvEight(gridSize, numAgents, B, dangerArea, boundaryType); // EnvFour or EnvEight (neighbors)
         Display emotion = new EmotionDisplay(e);
         Display density = new DensityDisplay(e);
         display(emotion, new Color(69, 69, 69));
