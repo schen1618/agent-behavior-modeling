@@ -26,9 +26,9 @@ public class Location extends Point
     /**
      * Averages elevel of agents in location
      */
-    public void calcLocationELevel()
+    public double calcLocationELevel()
     {
-        locationELevel = agentsInLocationList.stream().mapToDouble(Agent::geteLevel).average().orElse(0);
+        return agentsInLocationList.stream().mapToDouble(Agent::getCurrentELevel).average().orElse(0);
     }
     
     public List<Agent> getAgentsInLocationList()

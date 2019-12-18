@@ -13,30 +13,32 @@ public class EmotionDisplay extends Display
         super.paintComponent(g);
         g.setColor(new Color(227, 227, 227));
         
-        for(Point p : e.dangerArea)
+        for(Point p : Environment.dangerArea)
         {
-            g.fillRect((int) p.getX() - (e.gridUnitSize / 2), (int) p.getY() - (e.gridUnitSize / 2), e.gridUnitSize,
-                    e.gridUnitSize);
+            g.fillRect((int) p.getX() - (Environment.gridUnitSize / 2), (int) p.getY() - (
+                            Environment.gridUnitSize / 2), Environment.gridUnitSize,
+                    Environment.gridUnitSize);
         }
         
         g.setColor(Color.WHITE);
-        for(int x = e.gridPixelStart; x <= e.gridSizePixel + e.gridUnitSize; x += e.gridUnitSize)
+        for(int x = Environment.gridPixelStart; x <= Environment.gridSizePixel + Environment.gridUnitSize; x += Environment.gridUnitSize)
         {
-            for(int y = e.gridPixelStart; y <= e.gridSizePixel + e.gridUnitSize; y += e.gridUnitSize)
+            for(int y = Environment.gridPixelStart; y <= Environment.gridSizePixel + Environment.gridUnitSize; y += Environment.gridUnitSize)
+            
             {
-                g.drawRect(x, y, e.gridUnitSize, e.gridUnitSize);
+                g.drawRect(x, y, Environment.gridUnitSize, Environment.gridUnitSize);
             }
         }
         
         for(Agent agent : e.getAgentList())
         {
-            if(agent.geteLevel() > 255)
+            if(agent.getCurrentELevel() > 255)
             {
-                g.setColor(new Color(255, 510 - (int) agent.geteLevel(), 0));
+                g.setColor(new Color(255, 510 - (int) agent.getCurrentELevel(), 0));
             }
             else
             {
-                g.setColor(new Color((int) agent.geteLevel(), 255, 0));
+                g.setColor(new Color((int) agent.getCurrentELevel(), 255, 0));
             }
             
             g.fillOval((int) (agent.getX() - agent.radius), (int) (agent.getY() - agent.radius), (int) agent.diameter,

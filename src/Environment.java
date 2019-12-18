@@ -10,37 +10,36 @@ public abstract class Environment
     }
     
     //total grid size in pixels
-    int gridSizePixel;
+    static int gridSizePixel;
     
     //grid unit size in pixels
-    int gridUnitSize = 10;
+    static int gridUnitSize = 10;
     
     //grid left edge pixel location
-    int gridPixelStart = 15;
+    static int gridPixelStart = 15;
     
-    //number of agents
-    int numAgents;
+    //greatest coord (pixel) an agent can move to
+    static int maxMoveGrid;
+    
+    //smallest coord (pixel) an agent can move to
+    static int minMoveGrid = 20;
     
     //list that contains agents
-    List<Agent> agentList = new ArrayList<>();
+    private List<Agent> agentList = new ArrayList<>();
     
     //list that contains locations
     HashMap<Point, Location> locationList = new HashMap<>();
     
     //list that contains danger locations
-    List<Point> dangerArea;
+    static List<Point> dangerArea;
     
-    BoundaryType boundaryType;
-    
-    public Environment(int gridSize, int numAgents, Movement movement, List<Point> dangerArea,
-                       BoundaryType boundaryType)
+    public Environment(List<Point> dangerArea)
     {
-        this.gridSizePixel = gridSize * gridUnitSize;
-        this.numAgents = numAgents;
-        this.dangerArea = dangerArea;
-        this.boundaryType = boundaryType;
+        Environment.gridSizePixel = Main.gridSize * gridUnitSize;
+        Environment.dangerArea = dangerArea;
+        maxMoveGrid = gridSizePixel + 10;
         initLocations();
-        initAgentArray(numAgents, movement);
+        initAgentArray(Main.numAgents);
     }
     
     public HashMap<Point, Location> getLocationList()
@@ -58,17 +57,18 @@ public abstract class Environment
      *
      * @param n number of agents
      */
-    public void initAgentArray(int n, Movement movement)
+    public void initAgentArray(int n)
     {
         int len = locationList.keySet().toArray().length;
         Object[] locationArray = locationList.keySet().toArray();
         
         for(int i = 0; i < n; i++)
         {
-            Agent agent = new Agent(gridSizePixel, gridUnitSize, dangerArea, movement);
+            Agent agent = new Agent();
             agentList.add(agent);
             Point p = (Point) locationArray[new Random().nextInt(len)];
             agent.setLocation(p);
+            agent.prevLocation = p;
             locationList.get(p).addAgentsInLocationList(agent);
         }
     }
@@ -102,6 +102,7 @@ public abstract class Environment
         {
             Location prev = locationList.get(a.getLocation());
             a.move();
+            a.prevLocation = prev;
             prev.removeAgentsInLocationList(a); //remove agent from prev location
             locationList.get(a.getLocation()).addAgentsInLocationList(a);   //add agent to new location
         }
@@ -114,11 +115,13 @@ public abstract class Environment
     {
         for(Location l : locationList.values())
         {
-            l.calcLocationELevel();
-            
             if(dangerArea.contains(l)) //if agent is in dangerous area
             {
                 l.setLocationELevel(510); //max eLevel
+            }
+            else
+            {
+                l.setLocationELevel(l.calcLocationELevel());
             }
         }
     }
@@ -154,5 +157,4 @@ public abstract class Environment
      * @return list of adjacent locations
      */
     public abstract List<Point> findAdjLocation(int x, int y);
-    
 }

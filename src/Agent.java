@@ -8,36 +8,18 @@ public class Agent extends Point
     float radius = 5;
     float diameter = radius * 2;
     
-    //step size for agent (pixel)
-    private int step = 10;
-    
-    //total grid size (pixel)
-    private int gridSizePixel;
-    
-    //unit size (pixel)
-    private int gridUnitSize;
-    
-    //greatest coord (pixel) an agent can move to
-    private int maxMoveGrid;
-    
     //emotion level (0-510)
-    private double eLevel;
+    private double currentELevel;
+    private double prevELevel;
     
-    private int maxELevel = 510;
+    private List<Location> adjList = new ArrayList<>();
     
-    private List<Point> dangerArea;
-    private Movement movement;
-    List<Location> adjList = new ArrayList<>();
+    Point prevLocation;
     
-    public Agent(int gridSizePixel, int gridUnitSize, List<Point> dangerArea, Movement movement)
+    public Agent()
     {
-        this.gridSizePixel = gridSizePixel;
-        this.gridUnitSize = gridUnitSize;
-        maxMoveGrid = gridSizePixel + 10;
-        //setLocation(randCoord(), randCoord());
-        eLevel = 0;
-        this.dangerArea = dangerArea;
-        this.movement = movement;
+        currentELevel = 0;
+        prevELevel = 0;
     }
     
     /**
@@ -45,9 +27,9 @@ public class Agent extends Point
      *
      * @return elevel
      */
-    public double geteLevel()
+    public double getCurrentELevel()
     {
-        return eLevel;
+        return currentELevel;
     }
     
     /**
@@ -57,14 +39,15 @@ public class Agent extends Point
      */
     public void setELevel(double avg)
     {
-        if(dangerArea.contains(this))
+        prevELevel = getCurrentELevel();
+        
+        if(Environment.dangerArea.contains(this))
         {
-            eLevel = maxELevel;
+            currentELevel = 510; //max e level (for color purposes)
         }
         else
         {
-            double b = 0.90;
-            eLevel = b * avg;
+            currentELevel = Main.decayRate * avg;
         }
     }
     
@@ -89,22 +72,18 @@ public class Agent extends Point
     }
     
     /**
-     * Generates random coord for agent
-     *
-     * @return random coord within bounds
-     */
-    public int randCoord()
-    {
-        Random random = new Random();
-        return (random.nextInt((maxMoveGrid / 10) - 2) + 2) * gridUnitSize;
-    }
-    
-    /**
      * Moves agent, sets location
      */
     public void move() throws Exception
     {
-        setLocation(findNextMove());
+        if(currentELevel - prevELevel > Main.eDiffThreshold)
+        {
+            setLocation(adoptAdjMove());
+        }
+        else
+        {
+            setLocation(findNextMove());
+        }
     }
     
     /**
@@ -118,10 +97,18 @@ public class Agent extends Point
         double d = new Random().nextDouble();   //unif dist random
         double min = 0;
         
-        double sum = getAdjList().stream().mapToDouble((loc) -> movement.probability(loc, this)).sum(); //sum of h1 of adjList
+        double sum = getAdjList().stream().mapToDouble((loc) -> Main.movement.probability(loc, this)).sum(); //sum of h1
+        // of adjList
+        
+        if(sum == 0)
+        {
+            Collections.shuffle(getAdjList());
+            return getAdjList().get(new Random().nextInt(getAdjList().size()));
+        }
+        
         for(Location a : getAdjList())
         {
-            double x = movement.probability(a, this) / sum;
+            double x = Main.movement.probability(a, this) / sum;
             min = min + x;
             //min = min + (calcMoveProb(a) / sum);  //add to previous probability (0 <= min <= 1)
             
@@ -134,5 +121,118 @@ public class Agent extends Point
         throw new Exception("findNextMove method error, probably divide by 0");
     }
     
+    public Point adoptAdjMove() throws Exception
+    {
+        List<Agent> agentList =
+                getAdjList().stream().max(Comparator.comparing(Location::getLocationELevel)).get().getAgentsInLocationList(); //max elevel of adjList
+        List<Point> nextLocFromAdjAgents = new ArrayList<>();
+        
+        //get prev direction of adj agent and apply to current agent
+        for(Agent a : agentList)
+        {
+            Point nextLocation = findLocationFromTransform(this.getLocation(), findMoveTransform(a.prevLocation,
+                    a.getLocation()));
+            nextLocFromAdjAgents.add(nextLocation);
+        }
+    
+        if(nextLocFromAdjAgents.size() == 0)
+        {
+            return findNextMove(); //if adj locations contain no agents
+        }
+        
+        Collections.shuffle(nextLocFromAdjAgents);
+        int d = new Random().nextInt(nextLocFromAdjAgents.size()); //unif dist random
+        return agentList.get(d);
+    }
+    
+    public Point findMoveTransform(Point before, Point after)
+    {
+        int x;
+        int y;
+        
+        if(after.x - before.x == Environment.maxMoveGrid - Environment.minMoveGrid)
+        {
+            x = -1;
+        }
+        else if(after.x - before.x == Environment.minMoveGrid - Environment.maxMoveGrid)
+        {
+            x = 1;
+        }
+        else
+        {
+            x = after.x - before.x;
+        }
+        
+        if(after.y - before.y == Environment.maxMoveGrid - Environment.minMoveGrid)
+        {
+            y = -1;
+        }
+        else if(after.y - before.y == Environment.minMoveGrid - Environment.maxMoveGrid)
+        {
+            y = 1;
+        }
+        else
+        {
+            y = after.y - before.y;
+        }
+        
+        return new Point(x, y);
+    }
+    
+    public Point findLocationFromTransform(Point p, Point transform) throws Exception
+    {
+        int x;
+        int y;
+        
+        x = p.x + transform.x;
+        y = p.y + transform.y;
+        
+        switch(Main.boundaryType)
+        {
+            case TORUS:
+                if(x > Environment.maxMoveGrid)
+                {
+                    x = Environment.minMoveGrid;
+                }
+                else if(x < Environment.minMoveGrid)
+                {
+                    x = Environment.maxMoveGrid;
+                }
+                
+                if(y > Environment.maxMoveGrid)
+                {
+                    y = Environment.minMoveGrid;
+                }
+                else if(y < Environment.minMoveGrid)
+                {
+                    y = Environment.maxMoveGrid;
+                }
+                
+                return new Point(x, y);
+            
+            case BOUND:
+                if(x > Environment.maxMoveGrid)
+                {
+                    x = Environment.maxMoveGrid;
+                }
+                else if(x < Environment.minMoveGrid)
+                {
+                    x = Environment.minMoveGrid;
+                }
+                
+                if(y > Environment.maxMoveGrid)
+                {
+                    y = Environment.maxMoveGrid;
+                }
+                else if(y < Environment.minMoveGrid)
+                {
+                    y = Environment.minMoveGrid;
+                }
+                
+                return new Point(x, y);
+        }
+        
+        throw new Exception("Error in findLocationFromTransform");
+    }
 }
 

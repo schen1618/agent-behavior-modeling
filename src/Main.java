@@ -5,26 +5,46 @@ import java.util.*;
 
 public class Main
 {
-    static final int numAgents = 50000;   // number of agents
-    static final int gridSize = 50;   // length of grid (points)
-    static Movement A = ((location, agent) -> {
+    private static Movement A = ((location, agent) -> {
         double p = 1 / 510.0;
-        double q = 1.0; // Main.numAgents;
-        return Math.exp(-1 * p * location.getLocationELevel() * (q * (location.getAgentsInLocationList().size() + 1)));
+        double q = 30; // Main.numAgents;
+        return Math.exp(-1 * p * location.getLocationELevel() * q * (location.getAgentsInLocationList().size() + 1));
         //return Math.exp(-1 * p * e.getLocationELevel()) + Math.exp(-1 * q * e.getAgentsInLocationList().size());
     });
-    static Movement B = ((location, agent) -> {
+    
+    private static Movement B = ((location, agent) -> {
         double p = 1 / 510.0;
         double q = 1.0; // Main.numAgents;
-        return Math.exp(-1 * p * location.getLocationELevel() * (q * (location.getAgentsInLocationList().size() + 1)) * p * agent.geteLevel());
+        return Math.exp(-1 * p * location.getLocationELevel() * (q * (location.getAgentsInLocationList().size() + 1)) * p * agent.getCurrentELevel());
     });
-    static Environment.BoundaryType boundaryType = Environment.BoundaryType.BOUND; // bound types: BOUND, TORUS
-    private static int numWin = 0;  // number of windows (for nice display)
+    
+    // Change these parameters only
+    static final int numAgents = 50000;   // number of agents
+    static final int gridSize = 50;   // length of grid (points)
+    static final Environment.BoundaryType boundaryType = Environment.BoundaryType.TORUS; // bound types: BOUND, TORUS
+    static final double eDiffThreshold = 10; //10, 15
+    static final Movement movement = Main.A; // A, B
+    private static final int numAdj = 8; // 4 or 8
+    private static final int dangerAreaStart = 150; // between 0 and gridSize * 10
+    private static final int dangerAreaEnd = 275; // between 0 and gridSize * 10
+    static final int displayContrast = 4; // recommend between 2-4, depends on number of agents
+    static final double decayRate = 0.99;
+    //
     
     public static void main(String[] args)
     {
-        java.util.List<Point> dangerArea = generateDangerArea(150, 250);
-        Environment e = new EnvEight(gridSize, numAgents, B, dangerArea, boundaryType); // EnvFour or EnvEight (neighbors)
+        java.util.List<Point> dangerArea = generateDangerArea(dangerAreaStart, dangerAreaEnd);
+        Environment e;
+        
+        if(numAdj == 4)
+        {
+            e = new EnvFour(dangerArea); // 4 neighbors
+        }
+        else
+        {
+            e = new EnvEight(dangerArea); // 8 neighbors
+        }
+        
         Display emotion = new EmotionDisplay(e);
         Display density = new DensityDisplay(e);
         display(emotion, new Color(69, 69, 69));
@@ -35,8 +55,8 @@ public class Main
             {
                 try
                 {
-                    e.calcLocationELevel();   //avg elevel from agents in location
-                    e.calcAgentELevel();  //avg elevel from adj locations and find adj locations to move
+                    e.calcLocationELevel();   //avg e level from agents in location
+                    e.calcAgentELevel();  //avg e level from adj locations and find adj locations to move
                     e.moveAgents();   //move agents and add/remove from location in list
                     emotion.repaint();
                     density.repaint();
@@ -70,6 +90,8 @@ public class Main
         
         return dangerArea;
     }
+    
+    private static int numWin = 0;  // number of windows (for nice display)
     
     /**
      * Creates JFrame and formats

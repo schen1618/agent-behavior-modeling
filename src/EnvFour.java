@@ -4,16 +4,16 @@ import java.util.*;
 
 public class EnvFour extends Environment
 {
-    public EnvFour(int gridSize, int numAgents, Movement movement, List<Point> dangerArea, BoundaryType boundaryType)
+    public EnvFour(List<Point> dangerArea)
     {
-        super(gridSize, numAgents, movement, dangerArea, boundaryType);
+        super(dangerArea);
     }
     
     public List<Point> findAdjLocation(int x, int y)
     {
         List<Point> a = new ArrayList<>();
         
-        switch(boundaryType)
+        switch(Main.boundaryType)
         {
             case BOUND:
                 a.add(locationList.get(new Point(x, y)));
