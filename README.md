@@ -1,4 +1,4 @@
-#On-Lattice Crowd Modeling
+# On-Lattice Crowd Modeling
 
 Sherry Chen
 
@@ -6,7 +6,7 @@ Dr. Alethea Barbaro, MATH301 Fall 2019 - Present
 
 Case Western Reserve University
 
-##About
+## About
 
 A program that models agent movement and dynamics based on emotional level. Created using Java and Java Swing.
 
@@ -40,7 +40,7 @@ $ java Main
 
 
 
-##Definitions
+## Definitions
 
 - Emotional level (eLevel): parameter that influences agent movement
 
@@ -60,7 +60,7 @@ $ java Main
 
 
 
-##Structure (Class Descriptions)
+## Structure (Class Descriptions)
 
 - Agent: point that moves on a grid
 
@@ -80,7 +80,7 @@ $ java Main
 
 
 
-##Program Process Description
+## Program Process Description
 
 1. Create danger area
 2. Initialize Environment
@@ -96,7 +96,7 @@ $ java Main
 
 
 
-##Agent Movement
+## Agent Movement
 
 Two types of agent movement:
 
