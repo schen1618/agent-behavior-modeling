@@ -172,6 +172,12 @@ Two types of agent movement:
 
 
 
+In gif format:
+
+![ediff](C:\Users\schen\Desktop\ediff.gif)
+
+
+
 ## Improvements To Be Made
 
 12/18/19
