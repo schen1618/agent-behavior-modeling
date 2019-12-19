@@ -140,13 +140,13 @@ Two types of agent movement:
 
   ####For eDiffThreshold = 5, numAgents = 50000, Torus boundary
 
-![image-20191219060749053](C:\Users\schen\AppData\Roaming\Typora\typora-user-images\image-20191219060749053.png)
+![image-20191219060749053](./pictures/image-20191219060749053.png)
 
 - Torus behavior shown
 
 
 
-![image-20191219060951798](C:\Users\schen\AppData\Roaming\Typora\typora-user-images\image-20191219060951798.png)
+![image-20191219060951798](./pictures/image-20191219060951798.png)
 
 - Agent crowding in one area (furthest distance from danger area)
 
@@ -154,19 +154,19 @@ Two types of agent movement:
 
   
 
-![image-20191219061439536](C:\Users\schen\AppData\Roaming\Typora\typora-user-images\image-20191219061439536.png)
+![image-20191219061439536](./pictures/image-20191219061439536.png)
 
 - All agents drawn to danger area (agent behavior needs to be improved)
 
 
 
-![image-20191219061634428](C:\Users\schen\AppData\Roaming\Typora\typora-user-images\image-20191219061634428.png)
+![image-20191219061634428](./pictures/image-20191219061634428.png)
 
 - Dissipation of crowd and emergence of a "line"
 
   
 
-![image-20191219061725927](C:\Users\schen\AppData\Roaming\Typora\typora-user-images\image-20191219061725927.png)
+![image-20191219061725927](./pictures/image-20191219061725927.png)
 
 - End behavior, line remains
 
@@ -174,7 +174,7 @@ Two types of agent movement:
 
 In gif format:
 
-![ediff](C:\Users\schen\Desktop\ediff.gif)
+![ediff](./pictures/ediff.gif)
 
 
 
