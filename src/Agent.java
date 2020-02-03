@@ -47,7 +47,7 @@ public class Agent extends Point
         }
         else
         {
-            currentELevel = Main.decayRate * avg;
+            currentELevel = (Main.decayRate * avg) + 0.01 * currentELevel;
         }
     }
     
@@ -126,23 +126,45 @@ public class Agent extends Point
         List<Agent> agentList =
                 getAdjList().stream().max(Comparator.comparing(Location::getLocationELevel)).get().getAgentsInLocationList(); //max elevel of adjList
         List<Point> nextLocFromAdjAgents = new ArrayList<>();
-        
-        //get prev direction of adj agent and apply to current agent
-        for(Agent a : agentList)
-        {
-            Point nextLocation = findLocationFromTransform(this.getLocation(), findMoveTransform(a.prevLocation,
-                    a.getLocation()));
-            nextLocFromAdjAgents.add(nextLocation);
-        }
     
         if(nextLocFromAdjAgents.size() == 0)
         {
             return findNextMove(); //if adj locations contain no agents
         }
         
-        Collections.shuffle(nextLocFromAdjAgents);
-        int d = new Random().nextInt(nextLocFromAdjAgents.size()); //unif dist random
-        return agentList.get(d);
+        //get prev direction of adj agent and apply to current agent
+        for(Agent a : agentList)
+        {
+            
+            Point nextLocation = findLocationFromTransform(this.getLocation(), findMoveTransform(a.findNextMove(), a.getLocation()));
+            nextLocFromAdjAgents.add(nextLocation);
+        }
+        
+        //Collections.shuffle(nextLocFromAdjAgents);
+        //int d = new Random().nextInt(nextLocFromAdjAgents.size()); //unif dist random
+        //return agentList.get(d);
+        return mostCommon(nextLocFromAdjAgents);
+    }
+    
+    public static <T> T mostCommon(List<T> list)
+    {
+        Map<T, Integer> map = new HashMap<>();
+        
+        for(T t : list)
+        {
+            Integer val = map.get(t);
+            map.put(t, val == null ? 1 : val + 1);
+        }
+        
+        Map.Entry<T, Integer> max = null;
+        
+        for(Map.Entry<T, Integer> e : map.entrySet())
+        {
+            if(max == null || e.getValue() > max.getValue())
+                max = e;
+        }
+        
+        return max == null ? null : max.getKey();
     }
     
     public Point findMoveTransform(Point before, Point after)

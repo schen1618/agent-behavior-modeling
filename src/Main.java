@@ -24,7 +24,7 @@ public class Main
     static final Environment.BoundaryType boundaryType = Environment.BoundaryType.TORUS; // bound types: BOUND, TORUS
     static final double eDiffThreshold = 10; //10, 15
     static final Movement movement = Main.A; // A, B
-    private static final int numAdj = 8; // 4 or 8
+    private static final int numAdj = 4; // 4 or 8
     private static final int dangerAreaStart = 150; // between 0 and gridSize * 10
     private static final int dangerAreaEnd = 275; // between 0 and gridSize * 10
     static final int displayContrast = 4; // recommend between 2-4, depends on number of agents
