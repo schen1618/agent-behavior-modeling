@@ -6,9 +6,26 @@ import java.util.*;
 public class Main
 {
     private static Movement A = ((location, agent) -> {
+        //BigDecimal b = new BigDecimal("10000000000.");
+        double b = 10000;
         double p = 1 / 510.0;
-        double q = 30; // Main.numAgents;
-        return Math.exp(-1 * p * location.getLocationELevel() * q * (location.getAgentsInLocationList().size() + 1));
+        double q = 1.0 / ((double)Main.numAgents/(Main.gridSize*Main.gridSize));
+        
+        double E = (location.getLocationELevel() + 1) * p;
+        double N = (location.getAgentsInLocationList().size() + 1) * (1.0/ Main.numAgents);
+        //if(b * E * N < 0.0000000001)
+        //{
+            System.out.println("----");
+            System.out.println(-1 * b * E * N);
+            System.out.println(E);
+        //}
+        return Math.exp(-1*b*E*N);
+        
+        
+        //BigDecimal a = new BigDecimal(-1 * p * location.getLocationELevel() * q * (location.getAgentsInLocationList().size() + 1));
+        //System.out.println(a.doubleValue());
+        //return Math.exp(b.multiply(a).doubleValue());
+        
         //return Math.exp(-1 * p * e.getLocationELevel()) + Math.exp(-1 * q * e.getAgentsInLocationList().size());
     });
     
@@ -26,23 +43,23 @@ public class Main
     static final Movement movement = Main.A; // A, B
     private static final int numAdj = 4; // 4 or 8
     private static final int dangerAreaStart = 150; // between 0 and gridSize * 10
-    private static final int dangerAreaEnd = 275; // between 0 and gridSize * 10
+    private static final int dangerAreaEnd = 180; // between 0 and gridSize * 10
     static final int displayContrast = 4; // recommend between 2-4, depends on number of agents
-    static final double decayRate = 0.99;
+    static final double decayRate = 1;
+    static final java.util.List<Point> dangerArea = generateDangerArea_vertical();//generateDangerArea(dangerAreaStart, dangerAreaEnd);
     //
     
     public static void main(String[] args)
     {
-        java.util.List<Point> dangerArea = generateDangerArea(dangerAreaStart, dangerAreaEnd);
         Environment e;
         
         if(numAdj == 4)
         {
-            e = new EnvFour(dangerArea); // 4 neighbors
+            e = new EnvFour(Main.dangerArea); // 4 neighbors
         }
         else
         {
-            e = new EnvEight(dangerArea); // 8 neighbors
+            e = new EnvEight(Main.dangerArea); // 8 neighbors
         }
         
         Display emotion = new EmotionDisplay(e);
@@ -86,6 +103,36 @@ public class Main
             {
                 dangerArea.add(new Point(i, j));
             }
+        }
+        
+        return dangerArea;
+    }
+    
+    public static java.util.List<Point> generateDangerArea_diagonal()
+    {
+        int gridUnitSize = 10;
+        List<Point> dangerArea = new ArrayList<>();
+        
+        for(int i = 20; i < (gridSize * gridUnitSize) + 20; i += gridUnitSize)
+        {
+            dangerArea.add(new Point(i, i));
+            dangerArea.add(new Point(i+1, i));
+            dangerArea.add(new Point(i, i+1));
+        }
+        
+        return dangerArea;
+    }
+    
+    public static java.util.List<Point> generateDangerArea_vertical()
+    {
+        int gridUnitSize = 10;
+        List<Point> dangerArea = new ArrayList<>();
+        
+        int j = 20;
+        
+        for(int i = 20; i < (gridSize * gridUnitSize) + 20; i += gridUnitSize)
+        {
+            dangerArea.add(new Point(j, i));
         }
         
         return dangerArea;

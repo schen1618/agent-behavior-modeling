@@ -16,7 +16,7 @@ public class EnvFour extends Environment
         switch(Main.boundaryType)
         {
             case BOUND:
-                a.add(locationList.get(new Point(x, y)));
+                //a.add(locationList.get(new Point(x, y)));
                 
                 if(locationList.get(new Point(x - gridUnitSize, y)) != null)
                 {
@@ -58,7 +58,7 @@ public class EnvFour extends Environment
                     newyRight = 20;
                 }
                 
-                a.add(locationList.get(new Point(x, y)));
+                //a.add(locationList.get(new Point(x, y)));
                 a.add(locationList.get(new Point(newxUp, y)));
                 a.add(locationList.get(new Point(x, newyLeft)));
                 a.add(locationList.get(new Point(x, newyRight)));

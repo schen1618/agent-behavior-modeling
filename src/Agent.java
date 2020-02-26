@@ -47,7 +47,7 @@ public class Agent extends Point
         }
         else
         {
-            currentELevel = (Main.decayRate * avg) + 0.01 * currentELevel;
+            currentELevel = (Main.decayRate * avg); //+ 0.01 * currentELevel;
         }
     }
     
@@ -100,11 +100,11 @@ public class Agent extends Point
         double sum = getAdjList().stream().mapToDouble((loc) -> Main.movement.probability(loc, this)).sum(); //sum of h1
         // of adjList
         
-        if(sum == 0)
+        /*if(sum == 0)
         {
             Collections.shuffle(getAdjList());
             return getAdjList().get(new Random().nextInt(getAdjList().size()));
-        }
+        }*/
         
         for(Location a : getAdjList())
         {

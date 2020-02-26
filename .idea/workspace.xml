@@ -4,9 +4,9 @@
     <list default="true" id="794df966-757b-405c-8838-c40b252f987a" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Agent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EnvFour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EnvFour.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,6 +43,12 @@
       </profile-state>
     </entry>
   </component>
+  <component name="ProjectViewState">
+    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.Annotations" value="true" />
@@ -64,18 +70,6 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Application.Main">
     <configuration default="true" type="Applet">
@@ -190,6 +184,9 @@
       <workItem from="1580149747732" duration="2395000" />
       <workItem from="1580441267936" duration="23000" />
       <workItem from="1580501934443" duration="2895000" />
+      <workItem from="1580745392506" duration="93000" />
+      <workItem from="1580746830683" duration="6387000" />
+      <workItem from="1581964784446" duration="5227000" />
     </task>
     <servers />
   </component>
@@ -208,6 +205,28 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1461" height="279" key="GridCell.Tab.0.bottom" timestamp="1582268899539">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="279" key="GridCell.Tab.0.bottom/0.0.1504.963@0.0.1504.963" timestamp="1582268899539" />
+    <state width="1461" height="279" key="GridCell.Tab.0.center" timestamp="1582268899539">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="279" key="GridCell.Tab.0.center/0.0.1504.963@0.0.1504.963" timestamp="1582268899539" />
+    <state width="1461" height="279" key="GridCell.Tab.0.left" timestamp="1582268899539">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="279" key="GridCell.Tab.0.left/0.0.1504.963@0.0.1504.963" timestamp="1582268899539" />
+    <state width="1461" height="279" key="GridCell.Tab.0.right" timestamp="1582268899539">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="279" key="GridCell.Tab.0.right/0.0.1504.963@0.0.1504.963" timestamp="1582268899539" />
+    <state x="409" y="222" key="run.anything.popup" timestamp="1581969622952">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state x="409" y="222" key="run.anything.popup/0.0.1504.963@0.0.1504.963" timestamp="1581969622952" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/MATH301_19$Main.ic" NAME="Main Coverage Results" MODIFIED="1574450525819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
