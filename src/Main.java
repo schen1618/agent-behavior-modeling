@@ -7,9 +7,9 @@ public class Main
 {
     private static Movement A = ((location, agent) -> {
         //BigDecimal b = new BigDecimal("10000000000.");
-        double b = 10000;
+        double b = 100;  // 10^2 --> 10^-5, 10^6 --> 10^0
         double p = 1 / 510.0;
-        double q = 1.0 / ((double)Main.numAgents/(Main.gridSize*Main.gridSize));
+        //double q = 1.0 / ((double)Main.numAgents/(Main.gridSize*Main.gridSize));
         
         double E = (location.getLocationELevel() + 1) * p;
         double N = (location.getAgentsInLocationList().size() + 1) * (1.0/ Main.numAgents);

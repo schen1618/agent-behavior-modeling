@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.*;
 
@@ -94,8 +95,9 @@ public class Agent extends Point
      */
     public Point findNextMove() throws Exception
     {
-        double d = new Random().nextDouble();   //unif dist random
-        double min = 0;
+        double d = new Random().nextDouble(); //unif dist random
+        BigDecimal D = new BigDecimal(d);
+        BigDecimal min = new BigDecimal("0");
         
         double sum = getAdjList().stream().mapToDouble((loc) -> Main.movement.probability(loc, this)).sum(); //sum of h1
         // of adjList
@@ -108,11 +110,11 @@ public class Agent extends Point
         
         for(Location a : getAdjList())
         {
-            double x = Main.movement.probability(a, this) / sum;
-            min = min + x;
+            BigDecimal p = Main.movement.probability(a, this) / sum;
+            min = min.add(p);
             //min = min + (calcMoveProb(a) / sum);  //add to previous probability (0 <= min <= 1)
             
-            if(d < min)
+            if(D.compareTo(min) < 0)
             {
                 return a.getLocation();
             }
