@@ -4,9 +4,9 @@ import java.util.*;
 
 public class EnvFour extends Environment
 {
-    public EnvFour(List<Point> dangerArea)
+    public EnvFour(List<Point> dangerArea, List<Point> dangerAreaLeft, List<Point> dangerAreaRight)
     {
-        super(dangerArea);
+        super(dangerArea, dangerAreaLeft, dangerAreaRight);
     }
     
     public List<Point> findAdjLocation(int x, int y)

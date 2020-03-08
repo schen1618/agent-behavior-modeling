@@ -20,6 +20,20 @@ public class EmotionDisplay extends Display
                     Environment.gridUnitSize);
         }
         
+        for(Point p : Environment.dangerAreaLeft)
+        {
+            g.fillRect((int) p.getX() - (Environment.gridUnitSize / 2), (int) p.getY() - (
+                            Environment.gridUnitSize / 2), Environment.gridUnitSize,
+                    Environment.gridUnitSize);
+        }
+        
+        for(Point p : Environment.dangerAreaRight)
+        {
+            g.fillRect((int) p.getX() - (Environment.gridUnitSize / 2), (int) p.getY() - (
+                            Environment.gridUnitSize / 2), Environment.gridUnitSize,
+                    Environment.gridUnitSize);
+        }
+        
         g.setColor(Color.WHITE);
         for(int x = Environment.gridPixelStart; x <= Environment.gridSizePixel + Environment.gridUnitSize; x += Environment.gridUnitSize)
         {

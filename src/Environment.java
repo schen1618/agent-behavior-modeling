@@ -33,10 +33,16 @@ public abstract class Environment
     //list that contains danger locations
     static List<Point> dangerArea;
     
-    public Environment(List<Point> dangerArea)
+    static List<Point> dangerAreaLeft;
+    
+    static List<Point> dangerAreaRight;
+    
+    public Environment(List<Point> dangerArea, List<Point> dangerAreaLeft, List<Point> dangerAreaRight)
     {
         Environment.gridSizePixel = Main.gridSize * gridUnitSize;
         Environment.dangerArea = dangerArea;
+        Environment.dangerAreaLeft = dangerAreaLeft;
+        Environment.dangerAreaRight = dangerAreaRight;
         maxMoveGrid = gridSizePixel + 10;
         initLocations();
         initAgentArray(Main.numAgents);
@@ -84,7 +90,7 @@ public abstract class Environment
             {
                 Point p = new Point(x, y);
                 Location l = new Location(x, y);
-                if(dangerArea.contains(p))
+                if(dangerArea.contains(p) || dangerAreaLeft.contains(p) || dangerAreaRight.contains(p))
                 {
                     l.setLocationELevel(510); //max eLevel
                 }
@@ -115,7 +121,7 @@ public abstract class Environment
     {
         for(Location l : locationList.values())
         {
-            if(dangerArea.contains(l)) //if agent is in dangerous area
+            if(dangerArea.contains(l) || dangerAreaLeft.contains(l) || dangerAreaRight.contains(l)) //if agent is in dangerous area
             {
                 l.setLocationELevel(510); //max eLevel
             }

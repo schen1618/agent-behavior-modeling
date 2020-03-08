@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.*;
 
@@ -41,14 +40,14 @@ public class Agent extends Point
     public void setELevel(double avg)
     {
         prevELevel = getCurrentELevel();
-        
-        if(Environment.dangerArea.contains(this))
+    
+        if(Environment.dangerArea.contains(this) || Environment.dangerAreaLeft.contains(this) || Environment.dangerAreaRight.contains(this))
         {
             currentELevel = 510; //max e level (for color purposes)
         }
         else
         {
-            currentELevel = (Main.decayRate * avg); //+ 0.01 * currentELevel;
+            currentELevel = Main.decayRate * avg;//(Main.decayRate * avg) + 0.01 * currentELevel;
         }
     }
     
@@ -77,6 +76,19 @@ public class Agent extends Point
      */
     public void move() throws Exception
     {
+        if(Environment.dangerAreaLeft.contains(this))
+        {
+            setLocation(this.x + Environment.gridUnitSize, this.y);
+        }
+        else if(Environment.dangerAreaRight.contains(this))
+        {
+            setLocation(this.x - Environment.gridUnitSize, this.y);
+        }
+        else
+        {
+            setLocation(findNextMove());
+        }
+        /*
         if(currentELevel - prevELevel > Main.eDiffThreshold)
         {
             setLocation(adoptAdjMove());
@@ -84,7 +96,7 @@ public class Agent extends Point
         else
         {
             setLocation(findNextMove());
-        }
+        }*/
     }
     
     /**
@@ -96,25 +108,17 @@ public class Agent extends Point
     public Point findNextMove() throws Exception
     {
         double d = new Random().nextDouble(); //unif dist random
-        BigDecimal D = new BigDecimal(d);
-        BigDecimal min = new BigDecimal("0");
+        double min = 0;
         
-        double sum = getAdjList().stream().mapToDouble((loc) -> Main.movement.probability(loc, this)).sum(); //sum of h1
-        // of adjList
-        
-        /*if(sum == 0)
-        {
-            Collections.shuffle(getAdjList());
-            return getAdjList().get(new Random().nextInt(getAdjList().size()));
-        }*/
+        double sum = getAdjList().stream().mapToDouble((loc) -> Main.movement.probability(loc, this)).sum();
         
         for(Location a : getAdjList())
         {
-            BigDecimal p = Main.movement.probability(a, this) / sum;
-            min = min.add(p);
+            double p = Main.movement.probability(a, this) / sum;
+            min = min + p;
             //min = min + (calcMoveProb(a) / sum);  //add to previous probability (0 <= min <= 1)
             
-            if(D.compareTo(min) < 0)
+            if(d < min)
             {
                 return a.getLocation();
             }
@@ -123,6 +127,7 @@ public class Agent extends Point
         throw new Exception("findNextMove method error, probably divide by 0");
     }
     
+    /*
     public Point adoptAdjMove() throws Exception
     {
         List<Agent> agentList =
@@ -147,6 +152,7 @@ public class Agent extends Point
         //return agentList.get(d);
         return mostCommon(nextLocFromAdjAgents);
     }
+     */
     
     public static <T> T mostCommon(List<T> list)
     {
@@ -205,11 +211,8 @@ public class Agent extends Point
     
     public Point findLocationFromTransform(Point p, Point transform) throws Exception
     {
-        int x;
-        int y;
-        
-        x = p.x + transform.x;
-        y = p.y + transform.y;
+        int x = p.x + transform.x;
+        int y = p.y + transform.y;
         
         switch(Main.boundaryType)
         {

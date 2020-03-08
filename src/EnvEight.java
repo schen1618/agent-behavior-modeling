@@ -4,9 +4,9 @@ import java.util.*;
 
 public class EnvEight extends Environment
 {
-    public EnvEight(java.util.List<Point> dangerArea)
+    public EnvEight(List<Point> dangerArea, List<Point> dangerAreaLeft, List<Point> dangerAreaRight)
     {
-        super(dangerArea);
+        super(dangerArea, dangerAreaLeft, dangerAreaRight);
     }
     
     public List<Point> findAdjLocation(int x, int y)
