@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="794df966-757b-405c-8838-c40b252f987a" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/GUI.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MATH301-19.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MATH301-19.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,9 +56,11 @@
     <property name="Repository.Attach.JavaDocs" value="true" />
     <property name="Repository.Attach.Sources" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW" value="true" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="387" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$APPLICATION_HOME_DIR$/lib/forms_rt.jar!/" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -63,10 +69,10 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RunManager" selected="Application.Main">
     <configuration default="true" type="Applet">
@@ -202,21 +208,37 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state width="1461" height="140" key="GridCell.Tab.0.bottom" timestamp="1583702960241">
+    <state x="767" y="267" key="FileChooserDialogImpl" timestamp="1583730852066">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="1461" height="140" key="GridCell.Tab.0.bottom/0.0.1504.963@0.0.1504.963" timestamp="1583702960241" />
-    <state width="1461" height="140" key="GridCell.Tab.0.center" timestamp="1583702960241">
+    <state x="767" y="267" key="FileChooserDialogImpl/0.0.1504.963@0.0.1504.963" timestamp="1583730852066" />
+    <state width="707" height="138" key="GridCell.Tab.0.bottom" timestamp="1583736468970">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="1461" height="140" key="GridCell.Tab.0.center/0.0.1504.963@0.0.1504.963" timestamp="1583702960241" />
-    <state width="1461" height="140" key="GridCell.Tab.0.left" timestamp="1583702960241">
+    <state width="707" height="138" key="GridCell.Tab.0.bottom/0.0.1504.963@0.0.1504.963" timestamp="1583736468970" />
+    <state width="707" height="138" key="GridCell.Tab.0.center" timestamp="1583736468969">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="1461" height="140" key="GridCell.Tab.0.left/0.0.1504.963@0.0.1504.963" timestamp="1583702960241" />
-    <state width="1461" height="140" key="GridCell.Tab.0.right" timestamp="1583702960241">
+    <state width="707" height="138" key="GridCell.Tab.0.center/0.0.1504.963@0.0.1504.963" timestamp="1583736468969" />
+    <state width="707" height="138" key="GridCell.Tab.0.left" timestamp="1583736468968">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="1461" height="140" key="GridCell.Tab.0.right/0.0.1504.963@0.0.1504.963" timestamp="1583702960241" />
+    <state width="707" height="138" key="GridCell.Tab.0.left/0.0.1504.963@0.0.1504.963" timestamp="1583736468968" />
+    <state width="707" height="138" key="GridCell.Tab.0.right" timestamp="1583736468969">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="707" height="138" key="GridCell.Tab.0.right/0.0.1504.963@0.0.1504.963" timestamp="1583736468969" />
+    <state x="466" y="87" key="SettingsEditor" timestamp="1583730878231">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state x="466" y="87" key="SettingsEditor/0.0.1504.963@0.0.1504.963" timestamp="1583730878231" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1583732353102">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1504.963@0.0.1504.963" timestamp="1583732353102" />
+    <state x="627" y="275" key="UIDesigner.ListEditorDialog" timestamp="1583713480464">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state x="627" y="275" key="UIDesigner.ListEditorDialog/0.0.1504.963@0.0.1504.963" timestamp="1583713480464" />
   </component>
 </project>

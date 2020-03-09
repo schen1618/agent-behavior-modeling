@@ -22,7 +22,7 @@ public class Main
     });
     
     // Change these parameters only
-    static final int numAgents = 50000;   // number of agents
+    static int numAgents = 50000;   // number of agents
     static final int gridSize = 50;   // length of grid (points)
     static final Environment.BoundaryType boundaryType = Environment.BoundaryType.TORUS; // bound types: BOUND, TORUS
     static final double eDiffThreshold = 10; //10, 15
@@ -38,6 +38,16 @@ public class Main
     //
     
     public static void main(String[] args)
+    {
+        JFrame frame = new JFrame("Crowd Modeling");
+        frame.setContentPane(new GUI().$$$getRootComponent$$$());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+        //run();
+    }
+    
+    public static void run()
     {
         Environment e;
         
