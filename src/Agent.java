@@ -237,7 +237,7 @@ public class Agent extends Point
                 
                 return new Point(x, y);
             
-            case BOUND:
+            case REFLECT:
                 if(x > Environment.maxMoveGrid)
                 {
                     x = Environment.maxMoveGrid;

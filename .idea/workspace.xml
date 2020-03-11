@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="794df966-757b-405c-8838-c40b252f987a" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/GUI.form" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MATH301-19.iml" beforeDir="false" afterPath="$PROJECT_DIR$/MATH301-19.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Agent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EnvEight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EnvEight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EnvFour.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EnvFour.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Environment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Environment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/GUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/GUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,8 +59,9 @@
     <property name="Repository.Attach.JavaDocs" value="true" />
     <property name="Repository.Attach.Sources" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.SHOW" value="false" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW" value="true" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="387" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="255" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$APPLICATION_HOME_DIR$/lib/forms_rt.jar!/" />
@@ -188,6 +192,8 @@
       <workItem from="1580441267936" duration="23000" />
       <workItem from="1580501934443" duration="2895000" />
       <workItem from="1583542471811" duration="1490000" />
+      <workItem from="1583818787851" duration="275000" />
+      <workItem from="1583819814473" duration="12603000" />
     </task>
     <servers />
   </component>
@@ -212,22 +218,38 @@
       <screen x="0" y="0" width="1504" height="963" />
     </state>
     <state x="767" y="267" key="FileChooserDialogImpl/0.0.1504.963@0.0.1504.963" timestamp="1583730852066" />
-    <state width="707" height="138" key="GridCell.Tab.0.bottom" timestamp="1583736468970">
+    <state width="929" height="229" key="GridCell.Tab.0.bottom" timestamp="1583953152302">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="707" height="138" key="GridCell.Tab.0.bottom/0.0.1504.963@0.0.1504.963" timestamp="1583736468970" />
-    <state width="707" height="138" key="GridCell.Tab.0.center" timestamp="1583736468969">
+    <state width="929" height="229" key="GridCell.Tab.0.bottom/0.0.1504.963@0.0.1504.963" timestamp="1583953152302" />
+    <state width="929" height="229" key="GridCell.Tab.0.center" timestamp="1583953152302">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="707" height="138" key="GridCell.Tab.0.center/0.0.1504.963@0.0.1504.963" timestamp="1583736468969" />
-    <state width="707" height="138" key="GridCell.Tab.0.left" timestamp="1583736468968">
+    <state width="929" height="229" key="GridCell.Tab.0.center/0.0.1504.963@0.0.1504.963" timestamp="1583953152302" />
+    <state width="929" height="229" key="GridCell.Tab.0.left" timestamp="1583953152301">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="707" height="138" key="GridCell.Tab.0.left/0.0.1504.963@0.0.1504.963" timestamp="1583736468968" />
-    <state width="707" height="138" key="GridCell.Tab.0.right" timestamp="1583736468969">
+    <state width="929" height="229" key="GridCell.Tab.0.left/0.0.1504.963@0.0.1504.963" timestamp="1583953152301" />
+    <state width="929" height="229" key="GridCell.Tab.0.right" timestamp="1583953152302">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state width="707" height="138" key="GridCell.Tab.0.right/0.0.1504.963@0.0.1504.963" timestamp="1583736468969" />
+    <state width="929" height="229" key="GridCell.Tab.0.right/0.0.1504.963@0.0.1504.963" timestamp="1583953152302" />
+    <state width="1461" height="241" key="GridCell.Tab.1.bottom" timestamp="1583820283621">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="241" key="GridCell.Tab.1.bottom/0.0.1504.963@0.0.1504.963" timestamp="1583820283621" />
+    <state width="1461" height="241" key="GridCell.Tab.1.center" timestamp="1583820283621">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="241" key="GridCell.Tab.1.center/0.0.1504.963@0.0.1504.963" timestamp="1583820283621" />
+    <state width="1461" height="241" key="GridCell.Tab.1.left" timestamp="1583820283621">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="241" key="GridCell.Tab.1.left/0.0.1504.963@0.0.1504.963" timestamp="1583820283621" />
+    <state width="1461" height="241" key="GridCell.Tab.1.right" timestamp="1583820283621">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1461" height="241" key="GridCell.Tab.1.right/0.0.1504.963@0.0.1504.963" timestamp="1583820283621" />
     <state x="466" y="87" key="SettingsEditor" timestamp="1583730878231">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
@@ -236,9 +258,13 @@
       <screen x="0" y="0" width="1504" height="963" />
     </state>
     <state width="498" height="446" key="SwitcherDM/0.0.1504.963@0.0.1504.963" timestamp="1583732353102" />
-    <state x="627" y="275" key="UIDesigner.ListEditorDialog" timestamp="1583713480464">
+    <state x="627" y="275" key="UIDesigner.ListEditorDialog" timestamp="1583894558416">
       <screen x="0" y="0" width="1504" height="963" />
     </state>
-    <state x="627" y="275" key="UIDesigner.ListEditorDialog/0.0.1504.963@0.0.1504.963" timestamp="1583713480464" />
+    <state x="627" y="275" key="UIDesigner.ListEditorDialog/0.0.1504.963@0.0.1504.963" timestamp="1583894558416" />
+    <state width="1502" height="351" key="javadoc.popup" timestamp="1583890080903">
+      <screen x="0" y="0" width="1504" height="963" />
+    </state>
+    <state width="1502" height="351" key="javadoc.popup/0.0.1504.963@0.0.1504.963" timestamp="1583890080903" />
   </component>
 </project>

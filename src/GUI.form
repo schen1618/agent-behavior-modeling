@@ -26,7 +26,7 @@
               <text value="Boundary Type"/>
             </properties>
           </component>
-          <component id="456b7" class="javax.swing.JComboBox" binding="BoundaryTypeComboBox">
+          <component id="456b7" class="javax.swing.JComboBox" binding="boundaryTypeComboBox" custom-create="true">
             <constraints>
               <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
@@ -35,6 +35,7 @@
                 <item value="Torus"/>
                 <item value="Reflect"/>
               </model>
+              <toolTipText value="Torus: no boundaries (torus shaped environment), reflect: edges are bound (box environment)"/>
             </properties>
           </component>
           <component id="ea96d" class="javax.swing.JLabel">
@@ -49,7 +50,9 @@
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="input x input"/>
+            </properties>
           </component>
           <component id="57ab3" class="javax.swing.JLabel">
             <constraints>
@@ -63,7 +66,9 @@
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="Number of agents in simulation"/>
+            </properties>
           </component>
         </children>
       </grid>
@@ -83,12 +88,14 @@
               <text value="Neighbors"/>
             </properties>
           </component>
-          <component id="1e2ad" class="javax.swing.JRadioButton" binding="neighbors8Radio">
+          <component id="1e2ad" class="javax.swing.JRadioButton" binding="neighbors8Radio" custom-create="true">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusPainted value="false"/>
               <text value="8"/>
+              <toolTipText value="Agents have 8 neighbors: all adjacent cells (including corners)"/>
             </properties>
           </component>
           <component id="ff649" class="javax.swing.JLabel">
@@ -106,15 +113,18 @@
             <properties>
               <focusTraversalPolicyProvider value="false"/>
               <name value=""/>
+              <toolTipText value="Adjust beta value"/>
             </properties>
           </component>
-          <component id="8d342" class="javax.swing.JRadioButton" binding="neighbors4Radio">
+          <component id="8d342" class="javax.swing.JRadioButton" binding="neighbors4Radio" custom-create="true">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusPainted value="false"/>
               <selected value="true"/>
               <text value="4"/>
+              <toolTipText value="Agents have 4 neighbors: up, down, left, right"/>
             </properties>
           </component>
         </children>
@@ -124,7 +134,9 @@
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="1" use-parent-layout="false"/>
         </constraints>
-        <properties/>
+        <properties>
+          <toolTipText value="Stops the simulation"/>
+        </properties>
         <border type="none" title="Display Settings"/>
         <children>
           <component id="70ce0" class="javax.swing.JLabel">
@@ -135,23 +147,27 @@
               <text value="Display Type"/>
             </properties>
           </component>
-          <component id="25a14" class="javax.swing.JCheckBox" binding="emotionCheckBox" default-binding="true">
+          <component id="25a14" class="javax.swing.JCheckBox" binding="emotionCheckBox" custom-create="true" default-binding="true">
             <constraints>
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <focusPainted value="false"/>
               <selected value="true"/>
               <text value="Emotion"/>
+              <toolTipText value="Enable emotion display"/>
             </properties>
           </component>
-          <component id="d5652" class="javax.swing.JCheckBox" binding="densityCheckBox" default-binding="true">
+          <component id="d5652" class="javax.swing.JCheckBox" binding="densityCheckBox" custom-create="true" default-binding="true">
             <constraints>
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <enabled value="true"/>
+              <focusPainted value="false"/>
               <selected value="true"/>
               <text value="Density"/>
+              <toolTipText value="Enable density display"/>
             </properties>
           </component>
           <component id="38a87" class="javax.swing.JLabel">
@@ -162,17 +178,18 @@
               <text value="Contrast"/>
             </properties>
           </component>
-          <component id="eb670" class="javax.swing.JSlider" binding="contrastSlider">
+          <component id="eb670" class="javax.swing.JSlider" binding="contrastSlider" custom-create="true">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
               <majorTickSpacing value="1"/>
-              <maximum value="5"/>
+              <maximum value="10"/>
               <minimum value="1"/>
               <paintLabels value="true"/>
               <paintTicks value="true"/>
               <snapToTicks value="true"/>
+              <toolTipText value="Adjust contrast of density display"/>
               <value value="4"/>
             </properties>
           </component>
@@ -189,19 +206,28 @@
           <title-color color="-4473925"/>
         </border>
         <children>
-          <component id="f5eec" class="javax.swing.JButton" binding="runButton" default-binding="true">
+          <component id="f5eec" class="javax.swing.JButton" binding="runButton" custom-create="true" default-binding="true">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <borderPainted value="true"/>
+              <focusPainted value="false"/>
+              <hideActionText value="false"/>
               <text value="Run"/>
+              <toolTipText value="Run the simulation"/>
             </properties>
           </component>
-          <vspacer id="b5983">
+          <component id="a0ad8" class="javax.swing.JButton" binding="stopButton" custom-create="true">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
-          </vspacer>
+            <properties>
+              <focusPainted value="false"/>
+              <text value="Stop"/>
+              <toolTipText value="Stop the simulation"/>
+            </properties>
+          </component>
         </children>
       </grid>
     </children>

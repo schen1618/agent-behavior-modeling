@@ -3,6 +3,7 @@ import com.intellij.uiDesigner.core.*;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.*;
 
 public class GUI
 {
@@ -11,23 +12,100 @@ public class GUI
     private JRadioButton neighbors4Radio;
     private JRadioButton neighbors8Radio;
     private JSpinner gridSizeSpinner;
-    private JComboBox BoundaryTypeComboBox;
+    private JComboBox boundaryTypeComboBox;
     private JCheckBox emotionCheckBox;
     private JCheckBox densityCheckBox;
     private JSlider contrastSlider;
     private JSpinner betaSpinner;
     private JButton runButton;
+    private JButton stopButton;
     
     private void createUIComponents()
     {
         numAgentsSpinner = new JSpinner(new SpinnerNumberModel(50000, 0, 50000, 1));
-        ;
         gridSizeSpinner = new JSpinner(new SpinnerNumberModel(50, 1, 100, 1));
-        ;
         betaSpinner = new JSpinner(new SpinnerNumberModel(10000, 0, 1000000, 1));
+        runButton = new JButton();
+        stopButton = new JButton();
+        boundaryTypeComboBox = new JComboBox();
+        neighbors4Radio = new JRadioButton();
+        neighbors8Radio = new JRadioButton();
+        emotionCheckBox = new JCheckBox();
+        densityCheckBox = new JCheckBox();
+        contrastSlider = new JSlider();
         
         numAgentsSpinner.addChangeListener(e -> Main.numAgents = (int) numAgentsSpinner.getValue());
-        //runButton.addActionListener(e -> System.out.println("HII"));
+        
+        gridSizeSpinner.addChangeListener(e -> Main.gridSize = (int) gridSizeSpinner.getValue());
+        
+        betaSpinner.addChangeListener(e -> Main.b = (double) betaSpinner.getValue());
+        
+        runButton.addActionListener(e -> Main.run());
+    
+        emotionCheckBox.addItemListener(new ItemListener()
+        {
+            @Override
+            public void itemStateChanged(ItemEvent e)
+            {
+                if(e.getStateChange() == ItemEvent.SELECTED)
+                {
+                    Main.hasEmotionDisplay = true;
+                }
+                if(e.getStateChange() == ItemEvent.DESELECTED)
+                {
+                    Main.hasEmotionDisplay = false;
+                }
+            }
+        });
+    
+        densityCheckBox.addItemListener(new ItemListener()
+        {
+            @Override
+            public void itemStateChanged(ItemEvent e)
+            {
+                if(e.getStateChange() == ItemEvent.SELECTED)
+                {
+                    Main.hasDensityDisplay = true;
+                }
+                if(e.getStateChange() == ItemEvent.DESELECTED)
+                {
+                    Main.hasDensityDisplay = false;
+                }
+            }
+        });
+        /*
+        stopButton.addActionListener(e -> {
+            if(Main.emotion != null)
+            {
+                Main.emotion.removeAll();
+            }
+            if(Main.density != null)
+            {
+                Main.density.removeAll();
+            }
+        });
+        
+        boundaryTypeComboBox.addActionListener(e ->
+        {
+            String str = (String) boundaryTypeComboBox.getSelectedItem();
+            if(str.equals("Torus"))
+            {
+                Main.boundaryType = Environment.BoundaryType.TORUS;
+            }
+            if(str.equals("Reflect"))
+            {
+                Main.boundaryType = Environment.BoundaryType.REFLECT;
+            }
+        });
+        
+        neighbors4Radio.addActionListener(e -> Main.numAdj = 4);
+        
+        neighbors8Radio.addActionListener(e -> Main.numAdj = 8);
+        
+        
+        
+        contrastSlider.addChangeListener(e -> Main.displayContrast = (int) contrastSlider.getValue());
+    */
     }
     
     {
@@ -61,18 +139,20 @@ public class GUI
         label1.setText("Boundary Type");
         panel1.add(label1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        BoundaryTypeComboBox = new JComboBox();
         final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
         defaultComboBoxModel1.addElement("Torus");
         defaultComboBoxModel1.addElement("Reflect");
-        BoundaryTypeComboBox.setModel(defaultComboBoxModel1);
-        panel1.add(BoundaryTypeComboBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST,
+        boundaryTypeComboBox.setModel(defaultComboBoxModel1);
+        boundaryTypeComboBox.setToolTipText("Torus: no boundaries (torus shaped environment), reflect: edges are " +
+                "bound (box environment)");
+        panel1.add(boundaryTypeComboBox, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST,
                 GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
         label2.setText("Grid Size (N x N)");
         panel1.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        gridSizeSpinner.setToolTipText("input x input");
         panel1.add(gridSizeSpinner, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST,
                 GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -80,6 +160,7 @@ public class GUI
         label3.setText("Number of Agents");
         panel1.add(label3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        numAgentsSpinner.setToolTipText("Number of agents in simulation");
         panel1.add(numAgentsSpinner, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST,
                 GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -95,8 +176,9 @@ public class GUI
         label4.setText("Neighbors");
         panel2.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        neighbors8Radio = new JRadioButton();
+        neighbors8Radio.setFocusPainted(false);
         neighbors8Radio.setText("8");
+        neighbors8Radio.setToolTipText("Agents have 8 neighbors: all adjacent cells (including corners)");
         panel2.add(neighbors8Radio, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
                 GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -107,18 +189,21 @@ public class GUI
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         betaSpinner.setFocusTraversalPolicyProvider(false);
         betaSpinner.setName("");
+        betaSpinner.setToolTipText("Adjust beta value");
         panel2.add(betaSpinner, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST,
                 GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        neighbors4Radio = new JRadioButton();
+        neighbors4Radio.setFocusPainted(false);
         neighbors4Radio.setSelected(true);
         neighbors4Radio.setText("4");
+        neighbors4Radio.setToolTipText("Agents have 4 neighbors: up, down, left, right");
         panel2.add(neighbors4Radio, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
                 GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
         panel3.setLayout(new GridLayoutManager(2, 3, new Insets(10, 10, 10, 10), -1, 15));
+        panel3.setToolTipText("Stops the simulation");
         mainPanel.add(panel3, new GridConstraints(2, 0, 1, 3, GridConstraints.ANCHOR_CENTER,
                 GridConstraints.FILL_BOTH,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -129,17 +214,19 @@ public class GUI
         label6.setText("Display Type");
         panel3.add(label6, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        emotionCheckBox = new JCheckBox();
+        emotionCheckBox.setFocusPainted(false);
         emotionCheckBox.setSelected(true);
         emotionCheckBox.setText("Emotion");
+        emotionCheckBox.setToolTipText("Enable emotion display");
         panel3.add(emotionCheckBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST,
                 GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        densityCheckBox = new JCheckBox();
         densityCheckBox.setEnabled(true);
+        densityCheckBox.setFocusPainted(false);
         densityCheckBox.setSelected(true);
         densityCheckBox.setText("Density");
+        densityCheckBox.setToolTipText("Enable density display");
         panel3.add(densityCheckBox, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST,
                 GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
@@ -148,13 +235,13 @@ public class GUI
         label7.setText("Contrast");
         panel3.add(label7, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        contrastSlider = new JSlider();
         contrastSlider.setMajorTickSpacing(1);
-        contrastSlider.setMaximum(5);
+        contrastSlider.setMaximum(10);
         contrastSlider.setMinimum(1);
         contrastSlider.setPaintLabels(true);
         contrastSlider.setPaintTicks(true);
         contrastSlider.setSnapToTicks(true);
+        contrastSlider.setToolTipText("Adjust contrast of density display");
         contrastSlider.setValue(4);
         panel3.add(contrastSlider, new GridConstraints(1, 1, 1, 2, GridConstraints.ANCHOR_WEST,
                 GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
@@ -169,15 +256,22 @@ public class GUI
         panel4.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "",
                 TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, this.$$$getFont$$$(null, -1, -1,
                         panel4.getFont()), new Color(-4473925)));
-        runButton = new JButton();
+        runButton.setBorderPainted(true);
+        runButton.setFocusPainted(false);
+        runButton.setHideActionText(false);
         runButton.setText("Run");
+        runButton.setToolTipText("Run the simulation");
         panel4.add(runButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
                 GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel4.add(spacer1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        stopButton.setFocusPainted(false);
+        stopButton.setText("Stop");
+        stopButton.setToolTipText("Stop the simulation");
+        panel4.add(stopButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_HORIZONTAL,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ButtonGroup buttonGroup;
         buttonGroup = new ButtonGroup();
         buttonGroup.add(neighbors4Radio);

@@ -6,7 +6,7 @@ public abstract class Environment
 {
     public enum BoundaryType
     {
-        BOUND, TORUS
+        REFLECT, TORUS
     }
     
     //total grid size in pixels

@@ -15,7 +15,7 @@ public class EnvEight extends Environment
         
         switch(Main.boundaryType)
         {
-            case BOUND:
+            case REFLECT:
                 a.add(locationList.get(new Point(x, y)));
                 
                 if(locationList.get(new Point(x - gridUnitSize, y - gridUnitSize)) != null)
