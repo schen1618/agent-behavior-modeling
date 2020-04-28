@@ -38,9 +38,12 @@ public class GUI
         
         gridSizeSpinner.addChangeListener(e -> Main.gridSize = (int) gridSizeSpinner.getValue());
         
-        betaSpinner.addChangeListener(e -> Main.b = (double) betaSpinner.getValue());
+        betaSpinner.addChangeListener(e -> Main.b = (int) betaSpinner.getValue());
         
-        runButton.addActionListener(e -> Main.run());
+        runButton.addActionListener(e -> {
+            Main.run();
+            Main.close = false;
+        });
     
         emotionCheckBox.addItemListener(new ItemListener()
         {
@@ -73,17 +76,10 @@ public class GUI
                 }
             }
         });
-        /*
-        stopButton.addActionListener(e -> {
-            if(Main.emotion != null)
-            {
-                Main.emotion.removeAll();
-            }
-            if(Main.density != null)
-            {
-                Main.density.removeAll();
-            }
-        });
+        
+        stopButton.addActionListener(e -> Main.close = true);
+        
+        runButton.addActionListener(e -> Main.run());
         
         boundaryTypeComboBox.addActionListener(e ->
         {
@@ -102,10 +98,7 @@ public class GUI
         
         neighbors8Radio.addActionListener(e -> Main.numAdj = 8);
         
-        
-        
         contrastSlider.addChangeListener(e -> Main.displayContrast = (int) contrastSlider.getValue());
-    */
     }
     
     {
@@ -134,7 +127,8 @@ public class GUI
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1,
                 false));
-        panel1.setBorder(BorderFactory.createTitledBorder("Environment Settings  "));
+        panel1.setBorder(BorderFactory.createTitledBorder(null, "Environment Settings  ",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label1 = new JLabel();
         label1.setText("Boundary Type");
         panel1.add(label1, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
@@ -171,7 +165,8 @@ public class GUI
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1,
                 false));
-        panel2.setBorder(BorderFactory.createTitledBorder("Agent Settings  "));
+        panel2.setBorder(BorderFactory.createTitledBorder(null, "Agent Settings  ",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label4 = new JLabel();
         label4.setText("Neighbors");
         panel2.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
@@ -209,7 +204,8 @@ public class GUI
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 1,
                 false));
-        panel3.setBorder(BorderFactory.createTitledBorder("Display Settings"));
+        panel3.setBorder(BorderFactory.createTitledBorder(null, "Display Settings",
+                TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label6 = new JLabel();
         label6.setText("Display Type");
         panel3.add(label6, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,

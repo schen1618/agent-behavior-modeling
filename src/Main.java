@@ -34,6 +34,8 @@ public class Main
     static boolean hasEmotionDisplay = true;
     static boolean hasDensityDisplay = true;
     
+    static boolean close = false;
+    
     public static void main(String[] args)
     {
         JFrame frame = new JFrame("Crowd Modeling");
@@ -88,6 +90,18 @@ public class Main
                     e.calcAgentELevel();  //avg e level from adj locations and find adj locations to move
                     e.moveAgents();   //move agents and add/remove from location in list
                     repaintDisplays(finalEmotion, finalDensity);
+                    if(close)
+                    {
+                        if(hasEmotionDisplay)
+                        {
+                            SwingUtilities.getWindowAncestor(finalEmotion).dispose();
+                        }
+                        if(hasDensityDisplay)
+                        {
+                            SwingUtilities.getWindowAncestor(finalDensity).dispose();
+                        }
+                        return;
+                    }
                     Thread.sleep(50);
                 }
                 catch(Exception ex)
